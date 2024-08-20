@@ -1,0 +1,53 @@
+# Dependency directories
+node_modules/
+
+# Production build
+build/
+dist/
+
+# Environment files
+.env
+
+# IDE and text editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Maven
+target/
+*.iml
+
+# IntelliJ IDEA
+.idea/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Compiled class file
+*.class
+
+# Log files
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Byte compiled files
+*.class
+
