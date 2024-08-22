@@ -145,8 +145,8 @@ export default function ProductDetails() {
               />
             </div>
             <div className="flex flex-wrap space-x-5 justify-center">
-              {product.images.map((image) => (
-                <div
+              {product.images.map((image, index) => (
+                <div key={index}
                   onClick={() => handleSetActiveImage(image)}
                   className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] mt-4"
                 >

@@ -21,10 +21,10 @@ const Cart = () => {
       {cart.cartItems.length>0 && <div className="lg:grid grid-cols-3 lg:px-16 relative">
         <div className="lg:col-span-2 lg:px-5 bg-white">
         <div className=" space-y-3">
-          {cart.cartItems.map((item) => (
-            <>
-              <CartItem item={item} showButton={true}/>
-            </>
+          {cart.cartItems.map((item,index) => (
+            <div key={index}>
+              <CartItem  item={item} showButton={true}/>
+            </div>
           ))}
         </div>
       </div>
