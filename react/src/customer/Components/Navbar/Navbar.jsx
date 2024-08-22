@@ -22,7 +22,7 @@ function Navbar() {
                 className="h-8 w-8 mr-2"
               />
               <span className="font-bold text-white text-lg">
-                Shop With Zosh
+               Fashion Sharing Plateform
               </span>
             </Link>
 

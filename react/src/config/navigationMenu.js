@@ -27,7 +27,7 @@ export const navigation = {
               { name: 'Women Jeans', id: 'women_jeans' },
               { name: 'Lengha Choli', id: 'lengha_choli' },
               { name: 'Sweaters', id: 'sweater' },
-              { name: 'T-Shirts', id: 't-shirt' },
+              { name: 'T-Shirts', id: 't-shirts' },
               { name: 'Jackets', id: 'jacket' },
               { name: 'Gouns', id: 'gouns' },
               { name: 'Sarees', id: 'saree' },
