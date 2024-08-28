@@ -24,12 +24,12 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { auth,cart } = useSelector((store) => store);
+  const { auth, cart } = useSelector((store) => store);
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
   const jwt = localStorage.getItem("jwt");
-  const location=useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     if (jwt) {
@@ -37,7 +37,7 @@ export default function Navigation() {
       dispatch(getCart(jwt));
     }
   }, [jwt]);
-  
+
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,7 +50,6 @@ export default function Navigation() {
   };
   const handleClose = () => {
     setOpenAuthModal(false);
-   
   };
 
   const handleCategoryClick = (category, section, item, close) => {
@@ -58,12 +57,32 @@ export default function Navigation() {
     close();
   };
 
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+
+  const handlePageClick = (page) =>{
+    switch (page.name) {
+      case 'Home':
+        navigate("/");
+        break;
+      
+      case 'Rent out':
+        navigate("/")
+        break;
+      
+      case 'About Us':
+        navigate("/about")
+        break;
+    }
+  }
+
   useEffect(() => {
-    if (auth.user){ 
+    if (auth.user) {
       handleClose();
     }
-    if(location.pathname==="/login" || location.pathname==="/register"){
-      navigate(-1)
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
     }
   }, [auth.user]);
 
@@ -71,14 +90,13 @@ export default function Navigation() {
     handleCloseUserMenu();
     dispatch(logout());
   };
-  const handleMyOrderClick=()=>{
-    handleCloseUserMenu()
-    navigate("/account/order")
-  }
+  const handleMyOrderClick = () => {
+    handleCloseUserMenu();
+    navigate("/account/order");
+  };
 
   return (
     <div className="bg-white pb-10">
-      
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -276,6 +294,27 @@ export default function Navigation() {
               {/* Flyout menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
                 <div className="flex h-full space-x-8">
+                  {navigation.pages.slice(0, 1).map((page) => (
+                    <a
+                      key={page.name}
+                      href={page.href}
+                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                     
+                      <p
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageClick(page)
+                        }
+                      }
+                        className="cursor-pointer hover:text-gray-800"
+                      >
+                         {page.name}
+                      </p>
+                    
+                    </a>
+                  ))}
+
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
                       {({ open, close }) => (
@@ -393,13 +432,23 @@ export default function Navigation() {
                     </Popover>
                   ))}
 
-                  {navigation.pages.map((page) => (
+                  {navigation.pages.slice(1).map((page) => (
                     <a
                       key={page.name}
                       href={page.href}
                       className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                     >
-                      {page.name}
+                      <p
+                        onClick={(e) => {
+                          e.preventDefault(); 
+                          handlePageClick(page)
+                        }
+                      }
+                        className="cursor-pointer hover:text-gray-800"
+                      >
+                         {page.name}
+                      </p>
+                    
                     </a>
                   ))}
                 </div>
@@ -445,7 +494,7 @@ export default function Navigation() {
                         <MenuItem onClick={handleCloseUserMenu}>
                           Profile
                         </MenuItem>
-                        
+
                         <MenuItem onClick={handleMyOrderClick}>
                           My Orders
                         </MenuItem>

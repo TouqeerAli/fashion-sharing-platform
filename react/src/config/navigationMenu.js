@@ -1,5 +1,7 @@
 export const navigation = {
-    categories: [
+
+  categories: [
+      
       {
         id: 'women',
         name: 'Women',
@@ -83,7 +85,7 @@ export const navigation = {
             name: 'Clothing',
             items: [
               { name: 'Mens Kurtas', id: 'mens_kurta' },
-              { name: 'Shirt', id: 'shirt' },
+              { name: 'Shirts', id: 'shirts' },
               { name: 'Men Jeans', id: 'men_jeans' },
               { name: 'Sweaters', id: '#' },
               { name: 'T-Shirts', id: 't-shirts'},
@@ -92,18 +94,18 @@ export const navigation = {
               
             ],
           },
-          {
-            id: 'accessories',
-            name: 'Accessories',
-            items: [
-              { name: 'Watches', id: '#' },
-              { name: 'Wallets', id: '#' },
-              { name: 'Bags', id: '#' },
-              { name: 'Sunglasses', id: '#' },
-              { name: 'Hats', id: '#' },
-              { name: 'Belts', id: '#' },
-            ],
-          },
+          // {
+          //   id: 'accessories',
+          //   name: 'Accessories',
+          //   items: [
+          //     { name: 'Watches', id: '#' },
+          //     { name: 'Wallets', id: '#' },
+          //     { name: 'Bags', id: '#' },
+          //     { name: 'Sunglasses', id: '#' },
+          //     { name: 'Hats', id: '#' },
+          //     { name: 'Belts', id: '#' },
+          //   ],
+          // },
           {
             id: 'brands',
             name: 'Brands',
@@ -118,7 +120,8 @@ export const navigation = {
       },
     ],
     pages: [
-      { name: 'Company', id: '/' },
-      { name: 'Stores', id: '/' },
+      { name: 'Home', id: '/' },
+      { name: 'Rent out', id: '/' },
+      { name: 'About Us', id: '/' }
     ],
   }
