@@ -1,7 +1,15 @@
 import React from 'react';
 import closetImage from '../Data/images/rentout-closet-section.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const RentOutClosetSection = () => {
+
+  const navigate = useNavigate();
+
+  const handleRentOutClick = () => {
+    navigate('/rentout');  // Assumes the path to RentOut.jsx is '/rent-out'
+  };
+
   return (
     <div className="flex flex-row md:flex-row max-w-full h-[350px] min-h-[250px] mx-auto bg-white shadow-md">
       {/* Image Section */}
@@ -21,8 +29,10 @@ const RentOutClosetSection = () => {
         <p className="text-s md:text-sm text-gray-600 mb-3 md:mb-4">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
         </p>
-        <button className="bg-yellow-500 text-black px-3 py-1.5 rounded-full text-xs font-semibold w-28 hover:bg-yellow-600 transition-colors duration-200">
-          Learn more
+        <button 
+        onClick={handleRentOutClick}
+        className="bg-yellow-500 text-black px-3 py-1.5 rounded-full text-xs font-semibold w-28 hover:bg-yellow-600 transition-colors duration-200">
+          Rent Out
         </button>
       </div>
     </div>
