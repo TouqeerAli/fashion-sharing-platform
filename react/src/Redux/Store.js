@@ -7,6 +7,7 @@ import cartReducer from "./Customers/Cart/Reducer";
 import { orderReducer } from "./Customers/Order/Reducer";
 import adminOrderReducer from "./Admin/Orders/Reducer";
 import ReviewReducer from "./Customers/Review/Reducer";
+import rentOutReducer from './Customers/RentOut/Reducer';
 
 
 
@@ -20,6 +21,7 @@ const rootReducers=combineReducers({
     order:orderReducer,
     review:ReviewReducer,
    
+    rentOut: rentOutReducer,
 
     // admin
     adminsProduct:productReducer,

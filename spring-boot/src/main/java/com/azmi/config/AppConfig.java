@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -22,6 +23,11 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 public class AppConfig {
+
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
