@@ -19,6 +19,7 @@ const rootReducers=combineReducers({
     cart:cartReducer,
     order:orderReducer,
     review:ReviewReducer,
+   
 
     // admin
     adminsProduct:productReducer,

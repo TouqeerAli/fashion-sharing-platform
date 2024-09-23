@@ -25,6 +25,12 @@ public class UserProductController {
 		this.productService=productService;
 	}
 	
+//	@GetMapping("/allproducts")
+//	public ResponseEntity<List<Product>> getAllProducts(){
+//		List<Product> res= productService.getAllProducts();
+//		return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
+//	}
+	
 	
 	@GetMapping("/products")
 	public ResponseEntity<Page<Product>> findProductByCategoryHandler(@RequestParam String category,
