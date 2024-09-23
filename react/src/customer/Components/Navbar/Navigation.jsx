@@ -280,16 +280,14 @@ export default function Navigation() {
               </button>
 
               {/* Logo */}
-              <div className="ml-4 flex lg:ml-0">
-                <Link to="/">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    src="https://res.cloudinary.com/ddkso1wxi/image/upload/v1675919455/Logo/Copy_of_Zosh_Academy_nblljp.png"
-                    alt="Shopwithzosh"
-                    className="h-8 w-8 mr-2"
-                  />
-                </Link>
-              </div>
+              <div className="flex items-center">
+      <Link to="/" className="text-decoration-none">
+        <span className="sr-only">FashionFix</span>
+        <p className="text-2xl font-extrabold text-gray-900 tracking-tight">
+          Fashion<span className="text-indigo-600">Fix</span>
+        </p>
+      </Link>
+    </div>
 
               {/* Flyout menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
