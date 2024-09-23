@@ -48,7 +48,7 @@ public class ProductServiceImplementation implements ProductService {
 		}
 		
 		Category secondLevel=categoryRepository.
-				findByNameAndParant(req.getSecondLavelCategory(),topLevel.getName());
+				findByNameAndParent(req.getSecondLavelCategory(),topLevel.getName());
 		if(secondLevel==null) {
 			
 			Category secondLavelCategory=new Category();
@@ -59,7 +59,7 @@ public class ProductServiceImplementation implements ProductService {
 			secondLevel= categoryRepository.save(secondLavelCategory);
 		}
 
-		Category thirdLevel=categoryRepository.findByNameAndParant(req.getThirdLavelCategory(),secondLevel.getName());
+		Category thirdLevel=categoryRepository.findByNameAndParent(req.getThirdLavelCategory(),secondLevel.getName());
 		if(thirdLevel==null) {
 			
 			Category thirdLavelCategory=new Category();

@@ -68,7 +68,7 @@ export default function Navigation() {
         break;
       
       case 'Rent out':
-        navigate("/")
+        navigate("/rentout")
         break;
       
       case 'About Us':
