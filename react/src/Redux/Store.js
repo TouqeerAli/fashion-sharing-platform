@@ -21,6 +21,7 @@ const rootReducers=combineReducers({
     cart:cartReducer,
     order:orderReducer,
     review:ReviewReducer,
+   
     rentOut: rentOutReducer,
 
     // admin

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { submitRentOutItem } from "../../../Redux/Customers/RentOut/Action"; // Import your action
+import { useDispatch } from "react-redux";
+import { submitRentOutItem } from "../../../Redux/Customers/RentOut/Action";
 import {
   Grid,
   TextField,
@@ -9,12 +9,23 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Typography,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  IconButton,
+  Modal,
+  Fade,
+  Backdrop,
 } from "@mui/material";
+import { InsertDriveFile, Close, CheckCircleOutline } from "@mui/icons-material";
 
 const RentOutForm = () => {
   const dispatch = useDispatch();
-
-  // Local state for form fields
   const [formData, setFormData] = useState({
     itemName: "",
     brand: "",
@@ -34,14 +45,9 @@ const RentOutForm = () => {
     pickupLocation: "",
     termsAndConditions: false,
   });
-
-  // Local state for image files
   const [imageFiles, setImageFiles] = useState([]);
-
   const [showPopup, setShowPopup] = useState(false);
 
-
-  // Handle input change for form fields
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -50,43 +56,32 @@ const RentOutForm = () => {
     });
   };
 
-  // Handle multiple image file selection
   const handleFileChange = (e) => {
-    setImageFiles(e.target.files);
+    setImageFiles([...imageFiles, ...Array.from(e.target.files)]);
   };
 
-  // Handle form submission
+  const handleRemoveFile = (index) => {
+    setImageFiles(imageFiles.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Create FormData object for submission
     const data = new FormData();
-
-    // Create FormData object for submission
-
-    // Append form data fields
     for (const key in formData) {
-      console.log(key, formData[key]);
       data.append(key, formData[key]);
     }
-
-    // Append multiple image files
     for (let i = 0; i < imageFiles.length; i++) {
-      console.log("images", imageFiles[i]);
       data.append("images", imageFiles[i]);
     }
-
-    // Dispatch action to submit the form and images
     try {
       dispatch(submitRentOutItem(data));
       setShowPopup(true);
       setFormData({
-        // Reset form fields
         itemName: "",
         brand: "",
         topLevelCategory: "",
-    secondLevelCategory: "",
-    thirdLevelCategory: "",
+        secondLevelCategory: "",
+        thirdLevelCategory: "",
         size: "",
         color: "",
         description: "",
@@ -99,103 +94,88 @@ const RentOutForm = () => {
         contact: "",
         pickupLocation: "",
         termsAndConditions: false,
-        imageFiles: [],
       });
+      setImageFiles([]);
     } catch (error) {
       console.error("Submission error:", error);
     }
   };
-  const onClose = () => {
+
+  const handleClosePopup = () => {
     setShowPopup(false);
-};
+  };
+
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">
+    <Box
+      sx={{
+        maxWidth: "1200px",
+        width: "100%",
+        margin: "0 auto",
+        padding: { xs: 2, sm: 4 }, 
+        backgroundColor: "white",
+        borderRadius: 2,
+        boxShadow: 3,
+      }}
+    >
+      <Typography variant="h4" align="center" gutterBottom>
         Rent Out Your Fashion Item
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name */}
-        <div>
-         
-          <TextField
-          fullWidth
-           label="Name"
-              
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Email */}
-        <div>
-         
-          <TextField
-           fullWidth
-           label="Email"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Contact */}
-        <div>
-        
-          <TextField
-           fullWidth
-           label="Contact Number"
-            type="tel"
-            id="contact"
-            name="contact"
-            value={formData.contact}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-        {/* Item Name */}
-        <div>
-        
-          <TextField
-           fullWidth
-           label="Item Name"
-            type="text"
-            id="itemName"
-            name="itemName"
-            value={formData.itemName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Brand */}
-        <div>
-         
-          <TextField
-           fullWidth
-           label="Brand"
-            type="text"
-            id="brand"
-            name="brand"
-            value={formData.brand}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Category */}
-        <FormControl fullWidth>
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Contact Number"
+              type="tel"
+              name="contact"
+              value={formData.contact}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Item Name"
+              name="itemName"
+              value={formData.itemName}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Brand"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
               <InputLabel>Top Level Category</InputLabel>
               <Select
                 name="topLevelCategory"
@@ -209,6 +189,8 @@ const RentOutForm = () => {
                 <MenuItem value="kids">Kids</MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Second Level Category</InputLabel>
               <Select
@@ -223,7 +205,8 @@ const RentOutForm = () => {
                 <MenuItem value="brands">Brands</MenuItem>
               </Select>
             </FormControl>
-
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Third Level Category</InputLabel>
               <Select
@@ -241,221 +224,204 @@ const RentOutForm = () => {
                 <MenuItem value="lengha_choli">Lengha Choli</MenuItem>
               </Select>
             </FormControl>
-        {/* <div>
-          <label htmlFor="category" className="block text-gray-700">
-            Category
-          </label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-           // required
-          />
-        </div> */}
-
-        {/* Size */}
-        <div>
-          
-          <TextField
-           fullWidth
-           label="Size"
-            type="text"
-            id="size"
-            name="size"
-            value={formData.size}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-           required
-          />
-        </div>
-
-        {/* Color */}
-        <div>
-          
-          <TextField
-           fullWidth
-           label="Color"
-            type="text"
-            id="color"
-            name="color"
-            value={formData.color}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Description */}
-        <div>
-        
-          <TextField
-           fullWidth
-           label="Description"
-            id="description"
-            multiline
-            name="description"
-            rows={3}
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Rental Price */}
-        <div>
-         
-          <TextField
-           fullWidth
-           label="Rental Price"
-            type="number"
-            id="rentalPrice"
-            name="rentalPrice"
-            value={formData.rentalPrice}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Purchase Price */}
-        <div>
-      
-          <TextField
-           fullWidth
-           label="Purchase Price"
-            type="number"
-            id="purchasePrice"
-            name="purchasePrice"
-            value={formData.purchasePrice}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-        {/* Pickup Location */}
-        <div>
-         
-          <TextField
-           fullWidth
-           label="Pickup Location"
-            type="text"
-            id="pickupLocation"
-            name="pickupLocation"
-            value={formData.pickupLocation}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Available From */}
-        <div>
-          <label htmlFor="availableFrom" className="block text-gray-700">
-            Available From
-          </label>
-          <TextField
-           fullWidth
-        
-            type="date"
-            id="availableFrom"
-            name="availableFrom"
-            value={formData.availableFrom}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Available To */}
-        <div>
-          <label htmlFor="availableTo" className="block text-gray-700">
-            Available To
-          </label>
-          <TextField
-           fullWidth
-        
-            type="date"
-            id="availableTo"
-            name="availableTo"
-            value={formData.availableTo}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* File input for images */}
-        <div>
-          <label htmlFor="images" className="block text-gray-700">
-            Product Images
-          </label>
-          <TextField
-           fullWidth
-         
-            type="file"
-            name="images"
-            multiple
-            required
-            onChange={handleFileChange}
-            className="w-full p-3 border rounded-lg mt-3"
-          />
-        </div>
-
-        {/* Terms and Conditions */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="termsAndConditions"
-            name="termsAndConditions"
-            checked={formData.termsAndConditions}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-500"
-            required
-          />
-          <label htmlFor="termsAndConditions" className="ml-2 text-gray-700">
-            I agree to the terms and conditions
-          </label>
-        </div>
-
-        {/* Submit Button */}
-        {/* <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          Submit
-        </button> */}
-        <Button
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Size"
+              name="size"
+              value={formData.size}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Color"
+              name="color"
+              value={formData.color}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Description"
+              multiline
+              rows={3}
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Rental Price"
+              type="number"
+              name="rentalPrice"
+              value={formData.rentalPrice}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Purchase Price"
+              type="number"
+              name="purchasePrice"
+              value={formData.purchasePrice}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Pickup Location"
+              name="pickupLocation"
+              value={formData.pickupLocation}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Available From"
+              type="date"
+              name="availableFrom"
+              value={formData.availableFrom}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Available To"
+              type="date"
+              name="availableTo"
+              value={formData.availableTo}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <input
+              type="file"
+              name="images"
+              multiple
+              required
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              id="image-upload"
+              accept="image/*"
+            />
+            <label htmlFor="image-upload">
+              <Button variant="contained" component="span" fullWidth>
+                Upload Product Images
+              </Button>
+            </label>
+            {imageFiles.length > 0 && (
+              <Box mt={2}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Uploaded Files:
+                </Typography>
+                <List>
+                  {imageFiles.map((file, index) => (
+                    <ListItem key={index}>
+                    <ListItemIcon>
+                      <InsertDriveFile />
+                    </ListItemIcon>
+                    <ListItemText primary={file.name} />
+                    <IconButton onClick={() => handleRemoveFile(index)} edge="end" aria-label="delete">
+                      <Close />
+                    </IconButton>
+                  </ListItem>
+                  ))}
+                </List>
+              </Box>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.termsAndConditions}
+                  onChange={handleChange}
+                  name="termsAndConditions"
+                  color="primary"
+                  required
+                />
+              }
+              label="I agree to the terms and conditions"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
               variant="contained"
-              sx={{ p: 1.8 }}
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+              color="primary"
               size="large"
               type="submit"
+              fullWidth
             >
               Submit
             </Button>
+          </Grid>
+        </Grid>
       </form>
-      {showPopup && (
-                  <div className="fixed inset-0 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-                      <div className="text-center">
-                          <h2 className="text-xl font-bold mb-2">Form Submitted</h2>
-                          <p className="mb-4">Our Team Will contact you soon</p>
-                          <button 
-                              onClick={onClose} 
-                              className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600"
-                          >
-                              Close
-                          </button>
-                      </div>
-                  </div>
-              </div>
-       
-            )}
-    </div>
+      <Modal
+        open={showPopup}
+        onClose={handleClosePopup}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showPopup}>
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+            textAlign: 'center',
+          }}>
+            <CheckCircleOutline sx={{ fontSize: 60, color: 'success.main', mb: 2 }} />
+            <Typography variant="h5" component="h2" gutterBottom>
+              Submission Successful!
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>
+              Thank you for submitting your fashion item. Our team will review your submission and contact you soon.
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              You will receive a confirmation email shortly with further details.
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={handleClosePopup}
+              sx={{ mt: 2 }}
+            >
+              Close
+            </Button>
+          </Box>
+        </Fade>
+      </Modal>
+          </Box>
+        
+    
   );
 };
 

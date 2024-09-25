@@ -18,6 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Avatar from '@mui/material/Avatar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Logo from './Logo'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -173,7 +174,7 @@ export default function AdminNavbar({handleSideBarViewInMobile}) {
           >
             <MenuIcon />
           </IconButton>}
-          <Avatar alt="Zosh" src="https://res.cloudinary.com/ddkso1wxi/image/upload/v1675919455/Logo/Copy_of_Zosh_Academy_nblljp.png" />
+          <Logo/>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
