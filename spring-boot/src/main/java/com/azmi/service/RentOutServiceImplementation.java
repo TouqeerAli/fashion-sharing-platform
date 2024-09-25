@@ -149,6 +149,24 @@ public class RentOutServiceImplementation implements RentOutService{
     }
 
 
+    // Fetch all rent-out requests
+    public List<RentOut> getAllRentOutRequests() {
+        return rentOutRepository.findAll();
+    }
+
+    // Update status
+    public RentOut updateRentOutStatus(Long id, String status) {
+        RentOut rentOut = rentOutRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RentOut request not found"));
+        rentOut.setStatus(status);
+        return rentOutRepository.save(rentOut);
+    }
+
+    @Override
+    public RentOut getRentOutProduct(Long id) {
+        return rentOutRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RentOut request not found"));
+    }
 
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings

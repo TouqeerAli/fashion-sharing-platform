@@ -27,6 +27,8 @@ import ProductsTable from "./componets/Products/ProductsTable";
 import OrdersTable from "./componets/Orders/OrdersTable";
 import Customers from "./componets/customers/customers";
 import UpdateProductForm from "./componets/updateProduct/UpdateProduct";
+import AdminRentOutProducts from "./componets/rentOut/RentOutProductsTable";
+import AdminRentOutProductDetail from "./componets/rentOut/RentOutProductDetail";
 
 const drawerWidth = 240;
 
@@ -39,6 +41,8 @@ const menu = [
   {name:"Weekly Overview",path:"/admin"},
   {name:"Monthly Overview",path:"/admin"},
   {name:"Add Product",path:"/admin/product/create"},
+  {name:"RentOut Products",path:"/admin/rentout"},
+
 ];
 
 export default function AdminPannel() {
@@ -138,6 +142,9 @@ export default function AdminPannel() {
             <Route path="/orders" element={<OrdersTable/>}></Route>
             <Route path="/customers" element={<Customers/>}></Route>
             <Route path="/demo" element={<DemoAdmin />}></Route>
+            <Route path="/rentout" element={<AdminRentOutProducts />}></Route>
+            <Route path="/rentoutproduct/:id" element={<AdminRentOutProductDetail />} />
+
           </Routes>
          
         </Box>

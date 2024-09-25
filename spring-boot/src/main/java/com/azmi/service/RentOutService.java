@@ -9,5 +9,9 @@ import java.util.List;
 
 public interface RentOutService {
 
+    RentOut updateRentOutStatus(Long id, String status);
+
+    List<RentOut> getAllRentOutRequests();
+    RentOut getRentOutProduct(Long id);
     RentOut createRentOut(CreateRentOutRequest rentOutRequest, List<MultipartFile> images) throws IOException;
 }

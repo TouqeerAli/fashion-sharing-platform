@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/rentout")
 public class UserRentOutController {
 
-    RentOutService rentOutService;
+    private RentOutService rentOutService;
 
     public UserRentOutController(RentOutService rentOutService) {
         this.rentOutService = rentOutService;

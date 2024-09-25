@@ -8,6 +8,7 @@ import { orderReducer } from "./Customers/Order/Reducer";
 import adminOrderReducer from "./Admin/Orders/Reducer";
 import ReviewReducer from "./Customers/Review/Reducer";
 import rentOutReducer from './Customers/RentOut/Reducer';
+import adminRentOutReducer from "./Admin/RentOut/Reducer";
 
 
 
@@ -25,6 +26,7 @@ const rootReducers=combineReducers({
     // admin
     adminsProduct:productReducer,
     adminsOrder:adminOrderReducer,
+    adminsRentOut: adminRentOutReducer,
 
 
 });

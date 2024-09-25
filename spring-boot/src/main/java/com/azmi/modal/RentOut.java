@@ -42,6 +42,15 @@ public class RentOut {
     @JoinColumn(name="category_id")
     private Category category;
 
+    private String status;  // Can be "pending", "approved", or "rejected"
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 
     public Long getId() {
