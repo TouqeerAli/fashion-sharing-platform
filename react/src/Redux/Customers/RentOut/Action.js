@@ -1,4 +1,5 @@
 import api, { API_BASE_URL } from "../../../config/api";
+
 import { 
     RENT_OUT_ITEM_REQUEST, 
     RENT_OUT_ITEM_SUCCESS, 
@@ -21,9 +22,11 @@ const rentOutItemFailure = (error) => ({
 });
 
 // Thunk Action for handling API call with error handling
-export const submitRentOutItem = (formData) => async (dispatch) => {
+export const submitRentOutItem = (formData) => async (dispatch, getState) => {
     console.log("Api calls")    
     dispatch(rentOutItemRequest()); // Dispatch request action
+    const { auth } = getState();
+    const token = auth?.jwt || localStorage.getItem("jwt");
     try {
        // const response = await submitRentOutApi(formData); // Call the API to submit the rent-out form
         const { response } = await api.post(
@@ -32,9 +35,11 @@ export const submitRentOutItem = (formData) => async (dispatch) => {
             {
                 headers: {
                     'Content-Type': 'multipart/form-data', // Required for file uploads
+                    'Authorization': `Bearer ${token}`
                 },
             }
         );
+        
         dispatch(rentOutItemSuccess(response.data)); // Dispatch success action if API call succeeds
     } catch (error) {
         dispatch(rentOutItemFailure(

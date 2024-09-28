@@ -60,7 +60,7 @@ public class PaymentController {
 		      // Create a JSON object with the customer details
 		      JSONObject customer = new JSONObject();
 		      customer.put("name",order.getUser().getFirstName()+" "+order.getUser().getLastName());
-		      customer.put("contact",order.getUser().getMobile());
+		      customer.put("contact",order.getUser().getContact());
 		      customer.put("email",order.getUser().getEmail());
 		      paymentLinkRequest.put("customer",customer);
 

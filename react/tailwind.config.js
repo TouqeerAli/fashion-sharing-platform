@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/customer/**/*.{js,jsx,ts,tsx}",
     "./src/Pages/**/*.{js,jsx,ts,tsx}",
+    './node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
