@@ -10,6 +10,9 @@ import com.azmi.request.CreateRentOutRequest;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -154,6 +157,26 @@ public class RentOutServiceImplementation implements RentOutService{
     public List<RentOut> getAllRentOutRequests() {
         return rentOutRepository.findAll();
     }
+
+    public Page<RentOut> getAllRentOutRequestsWithPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return rentOutRepository.findAll(pageable);
+    }
+
+
+
+
+    public Page<RentOut> findByStatusAndSort(String status, Pageable pageable){
+
+        if (status != null && !status.isEmpty()) {
+            return rentOutRepository.findByStatus(status,pageable);
+        } else {
+            return rentOutRepository.findAll(pageable);
+        }
+
+    }
+
+
 
     // Update status
     public RentOut updateRentOutStatus(Long id, String status) {

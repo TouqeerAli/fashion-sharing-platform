@@ -12,12 +12,17 @@ import {
   TableRow,
   Typography,
   Pagination,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchRentOutProducts,
+  fetchRentOutRequests,
   approveRentOutProduct,
   rejectRentOutProduct,
 } from "../../../Redux/Admin/RentOut/Action";
@@ -29,12 +34,26 @@ const AdminRentOutProducts = () => {
   const { rentOutProducts, loading, error, totalPages } = useSelector(
     (state) => state.adminsRentOut
   );
-  const [page, setPage] = React.useState(1);
 
+  const [page, setPage] = React.useState(1);  // Tracks current page
+  const [size, setSize] = React.useState(10);  // Tracks items per page
+  const [status, setStatus] = React.useState(""); // Tracks selected status
+  const [dateOrder, setDateOrder] = React.useState(""); // Tracks selected date sort order
+
+
+  // Fetch rent out requests on component mount and when page/size changes
   useEffect(() => {
-    dispatch(fetchRentOutProducts(page - 1));
-  }, [dispatch, page]);
+    dispatch(fetchRentOutRequests(page - 1, size, status, dateOrder)); // page-1 because backend expects zero-indexed
+  }, [dispatch, page, size, status, dateOrder]);
 
+
+
+  // useEffect(() => {
+  //   dispatch(fetchRentOutProducts(page - 1));
+  // }, [dispatch, page]);
+
+
+  
   const handleApprove = (productId) => {
     dispatch(approveRentOutProduct(productId));
   };
@@ -47,9 +66,25 @@ const AdminRentOutProducts = () => {
     setPage(value);
   };
 
-  const handleViewDetails = (id) => {
-    navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+  // Handle size change from dropdown
+  const handleSizeChange = (event) => {
+    setSize(event.target.value);
+    setPage(1); // Reset to first page when size changes
   };
+
+// Handle Status dropdown change
+const handleStatusChange = (event) => {
+  setStatus(event.target.value);
+  setPage(1); // Reset to first page when status changes
+};
+
+// Handle Date sorting dropdown change
+const handleDateOrderChange = (event) => {
+  setDateOrder(event.target.value);
+  setPage(1); // Reset to first page when date order changes
+};
+
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -66,6 +101,35 @@ const AdminRentOutProducts = () => {
             "& .MuiCardHeader-action": { mt: 0.6 },
           }}
         />
+
+          {/* Filters Section */}
+        <Box display="flex" justifyContent="space-between" mb={2} mt={2} px={2}>
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel>Status</InputLabel>
+            <Select value={status} onChange={handleStatusChange} label="Status">
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="ACTIVE">Active</MenuItem>
+              <MenuItem value="PENDING">Pending</MenuItem>
+              <MenuItem value="REJECT">Reject</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel>Sort by Date</InputLabel>
+            <Select
+              value={dateOrder}
+              onChange={handleDateOrderChange}
+              label="Sort by Date"
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="ASC">Ascending</MenuItem>
+              <MenuItem value="DESC">Descending</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
+
+
         <TableContainer>
           <Table sx={{ minWidth: 800 }} aria-label="rent-out table">
             <TableHead>
@@ -180,7 +244,7 @@ const AdminRentOutProducts = () => {
         </TableContainer>
       </Card>
 
-      <Card className="mt-2 border">
+      {/* <Card className="mt-2 border">
         <div className="mx-auto px-4 py-5 flex justify-center shadow-lg rounded-md">
           <Pagination
             count={totalPages}
@@ -189,7 +253,32 @@ const AdminRentOutProducts = () => {
             onChange={handlePaginationChange}
           />
         </div>
-      </Card>
+      </Card> */}
+
+      {/* Dropdown for items per page */}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+        <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+          <InputLabel id="items-per-page-label">Items per page</InputLabel>
+          <Select
+            labelId="items-per-page-label"
+            id="items-per-page"
+            value={size}
+            onChange={handleSizeChange}
+            label="Items per page"
+          >
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={30}>30</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Pagination
+          count={totalPages > 0 ? totalPages : 1} // Ensure totalPages is a valid number
+          color="primary"
+          page={page}
+          onChange={handlePaginationChange}
+        />
+      </Box>
     </Box>
   );
 };

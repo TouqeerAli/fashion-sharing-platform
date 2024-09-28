@@ -40,7 +40,8 @@ const adminRentOutReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        rentOutProducts: action.payload,
+        rentOutProducts: action.payload.requests,
+        totalPages: action.payload.totalPages,
       };
 
     case APPROVE_RENT_OUT_PRODUCT_SUCCESS:

@@ -1,8 +1,11 @@
 package com.azmi.modal;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,6 +31,15 @@ public class RentOut {
     private String name;
     private String email;
     private String contact;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+
+    @PrePersist
+    protected void onCreate() {
+        createdDate = new Date();  // Set to the current system date when the entity is first saved
+    }
 
     /* @Lob*/
     // List of image paths (for multiple images)
