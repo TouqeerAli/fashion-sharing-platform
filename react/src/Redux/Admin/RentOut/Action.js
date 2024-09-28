@@ -93,12 +93,26 @@ export const fetchRentOutProductDetail = (id) => async (dispatch) => {
 
 
 // Fetch rent-out requests with pagination
-export const fetchRentOutRequests = (page, size = 10) => async (dispatch) => {
+export const fetchRentOutRequests = (page, size = 10, status = "", dateOrder = "") => async (dispatch) => {
   dispatch({ type: FETCH_RENT_OUT_PRODUCTS_REQUEST });
+
   try {
-    const response = await api.get(
-      `/api/admin/rentout/rentOutRequests?page=${page}&size=${size}`
-    );
+    // Build the query parameters string based on the filters
+    let queryParams = `?page=${page}&size=${size}`;
+
+    // Append status filter if selected
+    if (status) {
+      queryParams += `&status=${status}`;
+    }
+
+    // Append date sorting if selected
+    if (dateOrder) {
+      queryParams += `&sort=date,${dateOrder}`;
+    }
+
+    // Make the API call with the query parameters
+    const response = await api.get(`/api/admin/rentout/rentOutRequests${queryParams}`);
+
     dispatch({
       type: FETCH_RENT_OUT_PRODUCTS_SUCCESS,
       payload: {

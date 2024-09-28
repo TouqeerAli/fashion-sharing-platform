@@ -164,6 +164,19 @@ public class RentOutServiceImplementation implements RentOutService{
 
 
 
+
+    public Page<RentOut> findByStatusAndSort(String status, Pageable pageable){
+
+        if (status != null && !status.isEmpty()) {
+            return rentOutRepository.findByStatus(status,pageable);
+        } else {
+            return rentOutRepository.findAll(pageable);
+        }
+
+    }
+
+
+
     // Update status
     public RentOut updateRentOutStatus(Long id, String status) {
         RentOut rentOut = rentOutRepository.findById(id)

@@ -3,6 +3,9 @@ package com.azmi.controller;
 import com.azmi.modal.RentOut;
 import com.azmi.service.RentOutService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,19 +32,16 @@ public class AdminRentOutController {
     }
 
     @GetMapping("/rentOutRequests")
-    public Page<RentOut> getAllRentOutRequests(
+    public ResponseEntity<Page<RentOut>> getAllRentOutRequests(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "DESC") String sortOrder) {
 
-        System.out.println("Hello rent"+page+size);
-        Page<RentOut> result = rentOutService.getAllRentOutRequestsWithPage(page, size);
-        List<RentOut> list = result.getContent();
-        System.out.println("List"+list);
-        for(RentOut rent : list){
-            System.out.println("Name: "+rent.getName());
-        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "createdDate"));
 
-        return rentOutService.getAllRentOutRequestsWithPage(page, size);
+        Page<RentOut> requests = rentOutService.findByStatusAndSort(status, pageable);
+        return ResponseEntity.ok(requests);
     }
 
     @GetMapping("/{id}")

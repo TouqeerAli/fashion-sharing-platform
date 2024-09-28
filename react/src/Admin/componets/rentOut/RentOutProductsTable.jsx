@@ -35,11 +35,14 @@ const AdminRentOutProducts = () => {
 
   const [page, setPage] = React.useState(1);  // Tracks current page
   const [size, setSize] = React.useState(10);  // Tracks items per page
+  const [status, setStatus] = React.useState(""); // Tracks selected status
+  const [dateOrder, setDateOrder] = React.useState(""); // Tracks selected date sort order
+
 
   // Fetch rent out requests on component mount and when page/size changes
   useEffect(() => {
-    dispatch(fetchRentOutRequests(page - 1, size)); // page-1 because backend expects zero-indexed
-  }, [dispatch, page, size]);
+    dispatch(fetchRentOutRequests(page - 1, size, status, dateOrder)); // page-1 because backend expects zero-indexed
+  }, [dispatch, page, size, status, dateOrder]);
 
 
 
@@ -67,6 +70,20 @@ const AdminRentOutProducts = () => {
     setPage(1); // Reset to first page when size changes
   };
 
+// Handle Status dropdown change
+const handleStatusChange = (event) => {
+  setStatus(event.target.value);
+  setPage(1); // Reset to first page when status changes
+};
+
+// Handle Date sorting dropdown change
+const handleDateOrderChange = (event) => {
+  setDateOrder(event.target.value);
+  setPage(1); // Reset to first page when date order changes
+};
+
+
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -81,6 +98,35 @@ const AdminRentOutProducts = () => {
             "& .MuiCardHeader-action": { mt: 0.6 },
           }}
         />
+
+          {/* Filters Section */}
+        <Box display="flex" justifyContent="space-between" mb={2} mt={2} px={2}>
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel>Status</InputLabel>
+            <Select value={status} onChange={handleStatusChange} label="Status">
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="ACTIVE">Active</MenuItem>
+              <MenuItem value="PENDING">Pending</MenuItem>
+              <MenuItem value="REJECT">Reject</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel>Sort by Date</InputLabel>
+            <Select
+              value={dateOrder}
+              onChange={handleDateOrderChange}
+              label="Sort by Date"
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="ASC">Ascending</MenuItem>
+              <MenuItem value="DESC">Descending</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
+
+
         <TableContainer>
           <Table sx={{ minWidth: 800 }} aria-label="rent-out table">
             <TableHead>
