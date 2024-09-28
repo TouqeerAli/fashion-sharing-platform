@@ -97,6 +97,7 @@ public class RentOutServiceImplementation implements RentOutService{
         rentOut.setContact(rentOutRequest.getContact());
         rentOut.setPickupLocation(rentOutRequest.getPickupLocation());
         rentOut.setTermsAndConditions(rentOutRequest.getTermsAndConditions());
+        rentOut.setStatus("Pending");
         rentOut.setCategory(thirdLevel);
 
         if (images != null && !images.isEmpty()) {

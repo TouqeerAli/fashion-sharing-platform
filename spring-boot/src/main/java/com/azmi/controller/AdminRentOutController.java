@@ -40,4 +40,6 @@ public class AdminRentOutController {
         RentOut updatedRentOut = rentOutService.updateRentOutStatus(id, status);
         return ResponseEntity.ok(updatedRentOut);
     }
+
 }
+
