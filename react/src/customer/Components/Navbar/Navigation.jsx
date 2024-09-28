@@ -31,6 +31,8 @@ export default function Navigation() {
   const jwt = localStorage.getItem("jwt");
   const location = useLocation();
 
+  
+
   useEffect(() => {
     if (jwt) {
       dispatch(getUser(jwt));
@@ -93,6 +95,11 @@ export default function Navigation() {
   const handleMyOrderClick = () => {
     handleCloseUserMenu();
     navigate("/account/order");
+  };
+
+  const handleProfileClick = () => {
+    handleCloseUserMenu();
+    navigate("/account/profile");
   };
 
   return (
@@ -489,11 +496,11 @@ export default function Navigation() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem onClick={handleCloseUserMenu}>
+                        <MenuItem onClick={handleProfileClick}>
                           Profile
                         </MenuItem>
-
-                        <MenuItem onClick={handleMyOrderClick}>
+                      
+                          <MenuItem onClick={handleMyOrderClick}>
                           My Orders
                         </MenuItem>
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>

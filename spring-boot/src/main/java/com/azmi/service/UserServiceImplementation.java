@@ -2,6 +2,7 @@ package com.azmi.service;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.azmi.config.JwtTokenProvider;
@@ -38,13 +39,11 @@ public class UserServiceImplementation implements UserService {
 		String email=jwtTokenProvider.getEmailFromJwtToken(jwt);
 		
 		System.out.println("email"+email);
-		
-		User user=userRepository.findByEmail(email);
-		
-		
-		
-		if(user==null) {
-			throw new UserException("user not exist with email "+email);
+
+		User user = userRepository.findByEmail(email);
+
+		if(user == null) {
+			throw new UsernameNotFoundException("user not found with email "+email);
 		}
 		System.out.println("email user"+user.getEmail());
 		return user;

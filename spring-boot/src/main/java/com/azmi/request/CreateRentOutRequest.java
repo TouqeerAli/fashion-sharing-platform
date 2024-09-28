@@ -1,5 +1,6 @@
 package com.azmi.request;
 
+import com.azmi.modal.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -19,10 +20,6 @@ public class CreateRentOutRequest {
 
     private LocalDate availableFrom;
     private LocalDate availableTo;
-
-    private String name;
-    private String email;
-    private String contact;
 
     private List<MultipartFile> images;
     private String pickupLocation;
@@ -114,29 +111,6 @@ public class CreateRentOutRequest {
         this.availableTo = availableTo;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
 
     public String getPickupLocation() {
         return pickupLocation;

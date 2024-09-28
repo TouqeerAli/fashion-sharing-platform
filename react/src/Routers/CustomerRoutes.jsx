@@ -19,6 +19,7 @@ import Checkout from "../customer/Components/Checkout/Checkout";
 import Footer from "../customer/Components/footer/Footer";
 import PaymentSuccess from "../customer/Components/paymentSuccess/PaymentSuccess";
 import RateProduct from "../customer/Components/ReviewProduct/RateProduct";
+import Profile from "../customer/Components/Profile/Profile";
 // import NotFound from "../Pages/Notfound";
 
 const CustomerRoutes = () => {
@@ -49,6 +50,7 @@ const CustomerRoutes = () => {
         <Route path="/product/:productId" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/account/order" element={<Order />}></Route>
+        <Route path="/account/profile" element={<Profile />}></Route>
         <Route path="/account/order/:orderId" element={<OrderDetails />}></Route>
         <Route path="/account/rate/:productId" element={<RateProduct />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>

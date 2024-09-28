@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { submitRentOutItem } from "../../../Redux/Customers/RentOut/Action";
+import { useNavigate } from "react-router-dom";
 import {
   Grid,
   TextField,
@@ -26,6 +27,8 @@ import { InsertDriveFile, Close, CheckCircleOutline } from "@mui/icons-material"
 
 const RentOutForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { auth } = useSelector((store) => store);
   const [formData, setFormData] = useState({
     itemName: "",
     brand: "",
@@ -39,14 +42,17 @@ const RentOutForm = () => {
     purchasePrice: "",
     availableFrom: "",
     availableTo: "",
-    name: "",
-    email: "",
-    contact: "",
     pickupLocation: "",
     termsAndConditions: false,
   });
   const [imageFiles, setImageFiles] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    if (!auth.user) {
+      navigate("/login");
+    }
+  }, [auth.user, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -89,9 +95,6 @@ const RentOutForm = () => {
         purchasePrice: "",
         availableFrom: "",
         availableTo: "",
-        name: "",
-        email: "",
-        contact: "",
         pickupLocation: "",
         termsAndConditions: false,
       });
@@ -105,13 +108,17 @@ const RentOutForm = () => {
     setShowPopup(false);
   };
 
+  if (!auth.user) {
+    return null; // or a loading spinner
+  }
+
   return (
     <Box
       sx={{
         maxWidth: "1200px",
         width: "100%",
         margin: "0 auto",
-        padding: { xs: 2, sm: 4 }, 
+        padding: { xs: 2, sm: 4 },
         backgroundColor: "white",
         borderRadius: 2,
         boxShadow: 3,
@@ -122,38 +129,6 @@ const RentOutForm = () => {
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Contact Number"
-              type="tel"
-              name="contact"
-              value={formData.contact}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -350,6 +325,7 @@ const RentOutForm = () => {
               </Box>
             )}
           </Grid>
+          {/* ... */}
           <Grid item xs={12}>
             <FormControlLabel
               control={
@@ -377,6 +353,7 @@ const RentOutForm = () => {
           </Grid>
         </Grid>
       </form>
+      {/* Success Modal */}
       <Modal
         open={showPopup}
         onClose={handleClosePopup}
@@ -406,9 +383,6 @@ const RentOutForm = () => {
             <Typography variant="body1" sx={{ mb: 3 }}>
               Thank you for submitting your fashion item. Our team will review your submission and contact you soon.
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              You will receive a confirmation email shortly with further details.
-            </Typography>
             <Button
               variant="contained"
               onClick={handleClosePopup}
@@ -419,9 +393,7 @@ const RentOutForm = () => {
           </Box>
         </Fade>
       </Modal>
-          </Box>
-        
-    
+    </Box>
   );
 };
 
