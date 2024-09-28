@@ -38,11 +38,29 @@ export const fetchRentOutProducts = (page) => async (dispatch) => {
   }
 };
 
+// Fetch rent out product detail action
+export const fetchRentOutProductDetail = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: FETCH_RENTOUT_PRODUCT_DETAIL_REQUEST });
+    const response = await api.get(`/api/admin/rentout/${id}`); // Assuming your backend API route
+    console.log(response.data);
+    dispatch({
+      type: FETCH_RENTOUT_PRODUCT_DETAIL_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_RENTOUT_PRODUCT_DETAIL_FAILURE,
+      payload: error.response?.data?.message || 'Error fetching product details',
+    });
+  }
+};
+
 // Approve rent-out product
-export const approveRentOutProduct = (productId) => async (dispatch) => {
+export const  approveRentOutProduct = (productId) => async (dispatch) => {
   dispatch({ type: APPROVE_RENT_OUT_PRODUCT_REQUEST });
   try {
-    const response = await axios.put(`/api/admin/rentout/updateStatus/${productId}`);
+    const response = await api.put(`/api/admin/rentout/updateStatus/${productId}?status=Approved`);
     dispatch({
       type: APPROVE_RENT_OUT_PRODUCT_SUCCESS,
       payload: response.data,
@@ -59,7 +77,7 @@ export const approveRentOutProduct = (productId) => async (dispatch) => {
 export const rejectRentOutProduct = (productId) => async (dispatch) => {
   dispatch({ type: REJECT_RENT_OUT_PRODUCT_REQUEST });
   try {
-    const response = await axios.put(`/api/admin/rent-out/${productId}/reject`);
+    const response = await api.put(`/api/admin/rentout/updateStatus/${productId}?status=Rejected`);
     dispatch({
       type: REJECT_RENT_OUT_PRODUCT_SUCCESS,
       payload: response.data,
@@ -73,22 +91,7 @@ export const rejectRentOutProduct = (productId) => async (dispatch) => {
 };
 
 
-// Fetch rent out product detail action
-export const fetchRentOutProductDetail = (id) => async (dispatch) => {
-  try {
-    dispatch({ type: FETCH_RENTOUT_PRODUCT_DETAIL_REQUEST });
-    const response = await api.get(`/api/admin/rentout/${id}`); // Assuming your backend API route
-    dispatch({
-      type: FETCH_RENTOUT_PRODUCT_DETAIL_SUCCESS,
-      payload: response.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: FETCH_RENTOUT_PRODUCT_DETAIL_FAILURE,
-      payload: error.response?.data?.message || 'Error fetching product details',
-    });
-  }
-};
+
 
 // // Approve rent out product action
 // export const approveRentOutProduct = (id) => async (dispatch) => {

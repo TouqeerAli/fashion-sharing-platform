@@ -21,8 +21,10 @@ import {
   approveRentOutProduct,
   rejectRentOutProduct,
 } from "../../../Redux/Admin/RentOut/Action";
+import { useNavigate } from "react-router-dom";
 
 const AdminRentOutProducts = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { rentOutProducts, loading, error, totalPages } = useSelector(
     (state) => state.adminsRentOut
@@ -45,6 +47,10 @@ const AdminRentOutProducts = () => {
     setPage(value);
   };
 
+  const handleViewDetails = (id) => {
+    navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -52,10 +58,11 @@ const AdminRentOutProducts = () => {
     <Box width={"100%"}>
       <Card className="mt-2">
         <CardHeader
-          title="All Rent-Out Requests"
+          title="Rent-Out Products Requests"
           sx={{
             pt: 2,
             alignItems: "center",
+            textAlign: "center",
             "& .MuiCardHeader-action": { mt: 0.6 },
           }}
         />
@@ -63,15 +70,14 @@ const AdminRentOutProducts = () => {
           <Table sx={{ minWidth: 800 }} aria-label="rent-out table">
             <TableHead>
               <TableRow>
-                <TableCell>Image</TableCell>
-                <TableCell>Item Name</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Item Name</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Customer Name</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Brand</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Category</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Rental Price</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  Available From
-                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Available From</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Available To</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Status</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -85,59 +91,18 @@ const AdminRentOutProducts = () => {
                       "&:last-of-type td, &:last-of-type th": { border: 0 },
                     }}
                   >
-                    <TableCell>
-                      <Avatar alt={item.itemName} src={item.images[0]} />
+                    <TableCell sx={{ textAlign: "center" }}>
+                      {typeof item.itemName === "string" ? item.itemName : "N/A"}
                     </TableCell>
 
-                    <TableCell
-                      sx={{ py: (theme) => `${theme.spacing(0.5)} !important` }}
-                    >
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <Typography
-                          sx={{
-                            fontWeight: 500,
-                            fontSize: "0.875rem !important",
-                          }}
-                        >
-                          <Link
-                            to={`/admin/rentoutproduct/${item.id}`}
-                            style={{
-                              textDecoration: "none",
-                              color: "inherit",
-                              transition:
-                                "color 0.3s ease, transform 0.2s ease",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.target.style.color = "#4a90e2"; // Your preferred hover color
-                              e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
-                            }}
-                            onMouseLeave={(e) => {
-                              e.target.style.color = "inherit"; // Reset color after hover
-                              e.target.style.transform = "scale(1)"; // Reset scale after hover
-                            }}
-                          >
-                            {typeof item.itemName === "string"
-                              ? item.itemName
-                              : "N/A"}
-                          </Link>
-                        </Typography>
-                      </Box>
+                    <TableCell sx={{ textAlign: "center" }}>
+                      {typeof item.name === "string" ? item.name : "N/A"}
                     </TableCell>
-
-                    {/* <TableCell sx={{ py: (theme) => `${theme.spacing(0.5)} !important` }}>
-                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                          <Typography sx={{ fontWeight: 500, fontSize: "0.875rem !important" }}>
-                            {typeof item.itemName === 'string' ? item.itemName : 'N/A'}
-                          </Typography>
-                          {/* <Typography variant="caption">
-                            {typeof item.brand === 'string' ? item.brand : 'N/A'}
-                          </Typography> 
-                        </Box>
-                      </TableCell> */}
 
                     <TableCell sx={{ textAlign: "center" }}>
                       {typeof item.brand === "string" ? item.brand : "N/A"}
                     </TableCell>
+
                     <TableCell sx={{ textAlign: "center" }}>
                       {item.category && typeof item.category.name === "string"
                         ? item.category.name
@@ -145,22 +110,48 @@ const AdminRentOutProducts = () => {
                     </TableCell>
 
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.rentalPrice != null
-                        ? `$${item.rentalPrice}`
-                        : "N/A"}
+                      {item.rentalPrice != null ? `$${item.rentalPrice}` : "N/A"}
                     </TableCell>
+
                     <TableCell sx={{ textAlign: "center" }}>
                       {item.availableFrom
                         ? new Date(item.availableFrom).toLocaleDateString()
                         : "N/A"}
                     </TableCell>
+
                     <TableCell sx={{ textAlign: "center" }}>
                       {item.availableTo
                         ? new Date(item.availableTo).toLocaleDateString()
                         : "N/A"}
                     </TableCell>
+
+                    <TableCell sx={{ textAlign: "center" }}>
+                      <Typography
+                        sx={{
+                          color:
+                            item.status === "Pending"
+                              ? "yellow"
+                              : item.status === "Approved"
+                              ? "green"
+                              : item.status === "Rejected"
+                              ? "red"
+                              : "inherit", // Default color if status is not matched
+                          fontWeight: 500,
+                        }}
+                      >
+                        {item.status != null ? item.status : "N/A"}
+                      </Typography>
+                    </TableCell>
+
                     <TableCell sx={{ textAlign: "center" }}>
                       <Button
+                        variant="text"
+                        sx={{ color: "blue" }}
+                        onClick={() => handleViewDetails(item.id)}
+                      >
+                        View Details
+                      </Button>
+                      {/* <Button
                         variant="text"
                         sx={{ color: "green" }}
                         onClick={() => handleApprove(item.id)}
@@ -173,13 +164,13 @@ const AdminRentOutProducts = () => {
                         onClick={() => handleReject(item.id)}
                       >
                         Reject
-                      </Button>
+                      </Button> */}
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={8} align="center">
+                  <TableCell colSpan={9} align="center">
                     No data available
                   </TableCell>
                 </TableRow>
