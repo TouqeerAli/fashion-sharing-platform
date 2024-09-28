@@ -209,6 +209,8 @@ public class RentOutServiceImplementation implements RentOutService{
                 .orElseThrow(() -> new RuntimeException("RentOut request not found"));
     }
 
+
+
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings
         TypeMap<CreateRentOutRequest, RentOut> typeMap = modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
