@@ -8,6 +8,9 @@ import { orderReducer } from "./Customers/Order/Reducer";
 import adminOrderReducer from "./Admin/Orders/Reducer";
 import ReviewReducer from "./Customers/Review/Reducer";
 import rentOutReducer from './Customers/RentOut/Reducer';
+import profileReducer from "./Customers/Profile/Reducer";
+
+
 
 
 
@@ -22,6 +25,8 @@ const rootReducers=combineReducers({
     review:ReviewReducer,
    
     rentOut: rentOutReducer,
+    profile: profileReducer,
+    
 
     // admin
     adminsProduct:productReducer,

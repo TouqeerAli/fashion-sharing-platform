@@ -1,5 +1,10 @@
 package com.azmi.controller;
 
+import com.azmi.modal.Role;
+import com.azmi.repository.RoleRepository;
+import com.azmi.service.CustomUserDetailsService;
+import com.azmi.user.domain.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -7,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +26,12 @@ import com.azmi.repository.UserRepository;
 import com.azmi.request.LoginRequest;
 import com.azmi.response.AuthResponse;
 import com.azmi.service.CartService;
-import com.azmi.service.CustomUserDetails;
+import com.azmi.service.CustomUserDetailsService;
 
 import jakarta.validation.Valid;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,14 +40,17 @@ public class AuthController {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenProvider jwtTokenProvider;
-	private final CustomUserDetails customUserDetails;
+	private final CustomUserDetailsService customUserDetailsService;
 	private final CartService cartService;
+
+	@Autowired
+	private  RoleRepository roleRepository;
 	
-	public AuthController(UserRepository userRepository,PasswordEncoder passwordEncoder,JwtTokenProvider jwtTokenProvider,CustomUserDetails customUserDetails,CartService cartService) {
+	public AuthController(UserRepository userRepository,PasswordEncoder passwordEncoder,JwtTokenProvider jwtTokenProvider,CustomUserDetailsService customUserDetailsService,CartService cartService) {
 		this.userRepository=userRepository;
 		this.passwordEncoder=passwordEncoder;
 		this.jwtTokenProvider=jwtTokenProvider;
-		this.customUserDetails=customUserDetails;
+		this.customUserDetailsService=customUserDetailsService;
 		this.cartService=cartService;
 	}
 	
@@ -49,8 +61,10 @@ public class AuthController {
 	        String password = user.getPassword();
 	        String firstName=user.getFirstName();
 	        String lastName=user.getLastName();
-	        
-	        User isEmailExist=userRepository.findByEmail(email);
+			String contact = user.getContact();
+
+	        User isEmailExist=this.userRepository.findByEmail(email);
+
 
 	        // Check if user with the given email already exists
 	        if (isEmailExist!=null) {
@@ -65,12 +79,22 @@ public class AuthController {
 			createdUser.setFirstName(firstName);
 			createdUser.setLastName(lastName);
 	        createdUser.setPassword(passwordEncoder.encode(password));
-	        
-	        
-	        
-	        User savedUser= userRepository.save(createdUser);
-	        
-	        cartService.createCart(savedUser);
+			createdUser.setContact(contact);
+
+
+
+		Role userRole = roleRepository.findByName(UserRole.ROLE_USER)
+				.orElseThrow(() -> new RuntimeException("Error: Role not found."));
+
+		Set<Role> roles = new HashSet<>();
+		roles.add(userRole);
+		createdUser.setRoles(roles);
+		createdUser.setRegistered(true);
+
+
+			User registeredUser = userRepository.save(createdUser);
+
+	        cartService.createCart(registeredUser);
 
 	        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -104,7 +128,7 @@ public class AuthController {
     }
 	
 	private Authentication authenticate(String username, String password) {
-        UserDetails userDetails = customUserDetails.loadUserByUsername(username);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
         
         System.out.println("sign in userDetails - "+userDetails);
         

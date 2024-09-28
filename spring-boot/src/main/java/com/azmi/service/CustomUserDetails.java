@@ -1,39 +1,67 @@
 package com.azmi.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.azmi.modal.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import java.util.Collection;
 
-import com.azmi.modal.User;
-import com.azmi.repository.UserRepository;
+public class CustomUserDetails implements UserDetails {
 
-@Service
-public class CustomUserDetails implements UserDetailsService {
-	
-	private final UserRepository userRepository;
-	
-	public CustomUserDetails(UserRepository userRepository) {
-		this.userRepository = userRepository;
-		
-	}
+    private String username;
+    private String password;
+    private boolean isRegistered;
+    private Collection<? extends GrantedAuthority> authorities;
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		User user = userRepository.findByEmail(username);
-		
-		if(user == null) {
-			throw new UsernameNotFoundException("user not found with email "+username);
-		}
-		
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		
-		return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),authorities);
-	}
+    public CustomUserDetails(User user) {
+        this.username = user.getEmail();
+        this.password = user.getPassword();
+        this.isRegistered = user.isRegistered();
+        this.authorities = user.getAuthorities();
+    }
 
+    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
 }
+

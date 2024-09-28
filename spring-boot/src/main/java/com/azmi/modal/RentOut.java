@@ -25,9 +25,14 @@ public class RentOut {
     private LocalDate availableFrom;
     private LocalDate availableTo;
 
-    private String name;
-    private String email;
-    private String contact;
+//    private String name;
+//    private String email;
+//    private String contact;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     /* @Lob*/
     // List of image paths (for multiple images)
@@ -43,6 +48,15 @@ public class RentOut {
     private Category category;
 
 
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
@@ -132,29 +146,29 @@ public class RentOut {
         this.availableTo = availableTo;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getContact() {
+//        return contact;
+//    }
+//
+//    public void setContact(String contact) {
+//        this.contact = contact;
+//    }
 
     public String getPickupLocation() {
         return pickupLocation;
@@ -183,7 +197,7 @@ public class RentOut {
         this.images = images;
     }
 
-    public RentOut(Long id, String itemName, String brand, Category category, String size, String color, String description, Double rentalPrice, Double purchasePrice, LocalDate availableFrom, LocalDate availableTo, String name, String email, String contact, String pickupLocation, Boolean termsAndConditions) {
+    public RentOut(Long id, String itemName, String brand, Category category, String size, String color, String description, Double rentalPrice, Double purchasePrice, LocalDate availableFrom, LocalDate availableTo,String pickupLocation, Boolean termsAndConditions) {
         this.id = id;
         this.itemName = itemName;
         this.brand = brand;
@@ -195,9 +209,9 @@ public class RentOut {
         this.purchasePrice = purchasePrice;
         this.availableFrom = availableFrom;
         this.availableTo = availableTo;
-        this.name = name;
-        this.email = email;
-        this.contact = contact;
+//        this.name = name;
+//        this.email = email;
+//        this.contact = contact;
         this.pickupLocation = pickupLocation;
         this.termsAndConditions = termsAndConditions;
     }
