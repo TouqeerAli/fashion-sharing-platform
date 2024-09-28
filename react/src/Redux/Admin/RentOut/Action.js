@@ -90,6 +90,49 @@ export const fetchRentOutProductDetail = (id) => async (dispatch) => {
   }
 };
 
+
+
+// Fetch rent-out requests with pagination
+export const fetchRentOutRequests = (page, size = 10) => async (dispatch) => {
+  dispatch({ type: FETCH_RENT_OUT_PRODUCTS_REQUEST });
+  try {
+    const response = await api.get(
+      `/api/admin/rentout/rentOutRequests?page=${page}&size=${size}`
+    );
+    dispatch({
+      type: FETCH_RENT_OUT_PRODUCTS_SUCCESS,
+      payload: {
+        requests: response.data.content, // Update this line
+        totalPages: response.data.totalPages,
+      } // Adjust response structure if necessary
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_RENT_OUT_PRODUCTS_FAILURE,
+      payload: error.response ? error.response.data.message : error.message,
+    });
+  }
+};
+
+
+// export const fetchRentOutProducts = (page) => async (dispatch) => {
+//   dispatch({ type: FETCH_RENT_OUT_PRODUCTS_REQUEST });
+//   try {
+//     const response = await api.get(`/api/admin/rentout/all`);
+
+//     const data = response.data;
+//     console.log("RentOut Products ",data)
+//     dispatch({
+//       type: FETCH_RENT_OUT_PRODUCTS_SUCCESS,
+//       payload: response.data,
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: FETCH_RENT_OUT_PRODUCTS_FAILURE,
+//       payload: error.message,
+//     });
+//   }
+// };
 // // Approve rent out product action
 // export const approveRentOutProduct = (id) => async (dispatch) => {
 //   try {

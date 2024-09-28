@@ -12,12 +12,17 @@ import {
   TableRow,
   Typography,
   Pagination,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchRentOutProducts,
+  fetchRentOutRequests,
   approveRentOutProduct,
   rejectRentOutProduct,
 } from "../../../Redux/Admin/RentOut/Action";
@@ -27,12 +32,23 @@ const AdminRentOutProducts = () => {
   const { rentOutProducts, loading, error, totalPages } = useSelector(
     (state) => state.adminsRentOut
   );
-  const [page, setPage] = React.useState(1);
 
+  const [page, setPage] = React.useState(1);  // Tracks current page
+  const [size, setSize] = React.useState(10);  // Tracks items per page
+
+  // Fetch rent out requests on component mount and when page/size changes
   useEffect(() => {
-    dispatch(fetchRentOutProducts(page - 1));
-  }, [dispatch, page]);
+    dispatch(fetchRentOutRequests(page - 1, size)); // page-1 because backend expects zero-indexed
+  }, [dispatch, page, size]);
 
+
+
+  // useEffect(() => {
+  //   dispatch(fetchRentOutProducts(page - 1));
+  // }, [dispatch, page]);
+
+
+  
   const handleApprove = (productId) => {
     dispatch(approveRentOutProduct(productId));
   };
@@ -43,6 +59,12 @@ const AdminRentOutProducts = () => {
 
   const handlePaginationChange = (event, value) => {
     setPage(value);
+  };
+
+  // Handle size change from dropdown
+  const handleSizeChange = (event) => {
+    setSize(event.target.value);
+    setPage(1); // Reset to first page when size changes
   };
 
   if (loading) return <p>Loading...</p>;
@@ -189,7 +211,7 @@ const AdminRentOutProducts = () => {
         </TableContainer>
       </Card>
 
-      <Card className="mt-2 border">
+      {/* <Card className="mt-2 border">
         <div className="mx-auto px-4 py-5 flex justify-center shadow-lg rounded-md">
           <Pagination
             count={totalPages}
@@ -198,7 +220,32 @@ const AdminRentOutProducts = () => {
             onChange={handlePaginationChange}
           />
         </div>
-      </Card>
+      </Card> */}
+
+      {/* Dropdown for items per page */}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+        <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+          <InputLabel id="items-per-page-label">Items per page</InputLabel>
+          <Select
+            labelId="items-per-page-label"
+            id="items-per-page"
+            value={size}
+            onChange={handleSizeChange}
+            label="Items per page"
+          >
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={30}>30</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Pagination
+          count={totalPages > 0 ? totalPages : 1} // Ensure totalPages is a valid number
+          color="primary"
+          page={page}
+          onChange={handlePaginationChange}
+        />
+      </Box>
     </Box>
   );
 };
