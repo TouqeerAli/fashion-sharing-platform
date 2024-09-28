@@ -26,6 +26,6 @@ public interface RentOutService {
 
 
     RentOut getRentOutProduct(Long id);
-    RentOut createRentOut(CreateRentOutRequest rentOutRequest, List<MultipartFile> images) throws IOException;
+
 
 }
