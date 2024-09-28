@@ -1,8 +1,11 @@
 package com.azmi.modal;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,6 +37,15 @@ public class RentOut {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+
+    @PrePersist
+    protected void onCreate() {
+        createdDate = new Date();  // Set to the current system date when the entity is first saved
+    }
+
     /* @Lob*/
     // List of image paths (for multiple images)
     @OneToMany(mappedBy = "rentOut", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,6 +59,15 @@ public class RentOut {
     @JoinColumn(name="category_id")
     private Category category;
 
+    private String status;  // Can be "pending", "approved", or "rejected"
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 
 

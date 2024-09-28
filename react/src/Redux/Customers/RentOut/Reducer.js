@@ -1,26 +1,33 @@
-import { 
-    RENT_OUT_ITEM_REQUEST, 
-    RENT_OUT_ITEM_SUCCESS, 
-    RENT_OUT_ITEM_FAILURE 
-} from './ActionType';
-
-const initialState = {
+import {
+    FETCH_RENT_OUT_PRODUCTS_REQUEST,
+    FETCH_RENT_OUT_PRODUCTS_SUCCESS,
+    FETCH_RENT_OUT_PRODUCTS_FAILURE,
+  } from './ActionType';
+  
+  const initialState = {
     loading: false,
-    data: null,
+    rentOutProducts: null,
     error: null,
-};
-
-const rentOutReducer = (state = initialState, action) => {
+    totalPages: 0,
+  };
+  
+  const adminRentOutReducer = (state = initialState, action) => {
     switch (action.type) {
-        case RENT_OUT_ITEM_REQUEST:
-            return { ...state, loading: true, error: null };
-        case RENT_OUT_ITEM_SUCCESS:
-            return { ...state, loading: false, data: action.payload };
-        case RENT_OUT_ITEM_FAILURE:
-            return { ...state, loading: false, error: action.payload };
-        default:
-            return state;
+      case FETCH_RENT_OUT_PRODUCTS_REQUEST:
+        return { ...state, loading: true, error: null };
+      case FETCH_RENT_OUT_PRODUCTS_SUCCESS:
+        return { 
+          ...state, 
+          loading: false, 
+          rentOutProducts: action.payload.content,
+          totalPages: action.payload.totalPages 
+        };
+      case FETCH_RENT_OUT_PRODUCTS_FAILURE:
+        return { ...state, loading: false, error: action.payload };
+      default:
+        return state;
     }
-};
-
-export default rentOutReducer;
+  };
+  
+  export default adminRentOutReducer;
+  
