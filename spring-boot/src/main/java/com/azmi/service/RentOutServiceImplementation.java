@@ -9,10 +9,13 @@ import com.azmi.repository.RentOutRepository;
 import com.azmi.request.CreateRentOutRequest;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +33,10 @@ public class RentOutServiceImplementation implements RentOutService{
 
     private static final String IMAGE_UPLOAD_DIR = "src/main/resources/static/img/rent-out_products_img";
 
+
+
+    @Autowired
+    private JavaMailSender mailSender;  // Email sender instance
 
     ModelMapper modelMapper;
 
@@ -182,9 +189,32 @@ public class RentOutServiceImplementation implements RentOutService{
     public RentOut updateRentOutStatus(Long id, String status) {
         RentOut rentOut = rentOutRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RentOut request not found"));
+
+        String email = rentOut.getEmail();
+
+        sendEmail(email);
+
+
+
+
         rentOut.setStatus(status);
         return rentOutRepository.save(rentOut);
     }
+
+    private void sendEmail(String email) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("RentOut Status Update");
+            message.setText("Your RentOut request status has been updated to: ");
+
+            // Send the email
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send email", e);
+        }
+    }
+
 
     @Override
     public RentOut getRentOutProduct(Long id) {

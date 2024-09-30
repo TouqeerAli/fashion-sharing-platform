@@ -43,7 +43,7 @@ export const fetchRentOutProductDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: FETCH_RENTOUT_PRODUCT_DETAIL_REQUEST });
     const response = await api.get(`/api/admin/rentout/${id}`); // Assuming your backend API route
-    console.log(response.data);
+    console.log("hello",response.data);
     dispatch({
       type: FETCH_RENTOUT_PRODUCT_DETAIL_SUCCESS,
       payload: response.data,
@@ -110,12 +110,12 @@ export const fetchRentOutRequests = (page, size = 10, status = "", dateOrder = "
 
     // Append date sorting if selected
     if (dateOrder) {
-      queryParams += `&sort=date,${dateOrder}`;
+      queryParams += `&sort=${dateOrder}`;
     }
 
     // Make the API call with the query parameters
     const response = await api.get(`/api/admin/rentout/rentOutRequests${queryParams}`);
-
+   
     dispatch({
       type: FETCH_RENT_OUT_PRODUCTS_SUCCESS,
       payload: {
