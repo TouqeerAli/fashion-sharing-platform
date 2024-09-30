@@ -11,6 +11,13 @@ import {
   IconButton,
   DialogActions,
   DialogTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import { ArrowBack, ArrowForward, Close } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,10 +40,18 @@ const AdminRentOutProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null); // Track which action is being confirmed
+  const [status, setStatus] = useState("Pending"); // Local state for status
 
   useEffect(() => {
     dispatch(fetchRentOutProductDetail(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    // Update the local status if the product details are loaded
+    if (rentOutProduct) {
+      setStatus(rentOutProduct.status);
+    }
+  }, [rentOutProduct]);
 
   const handleApprove = () => {
     setConfirmAction("approve");
@@ -51,8 +66,10 @@ const AdminRentOutProductDetail = () => {
   const confirmActionHandler = () => {
     if (confirmAction === "approve") {
       dispatch(approveRentOutProduct(id));
+      setStatus("Approved"); // Update local status
     } else if (confirmAction === "reject") {
       dispatch(rejectRentOutProduct(id));
+      setStatus("Rejected"); // Update local status
     }
     setOpenConfirmDialog(false);
   };
@@ -82,7 +99,6 @@ const AdminRentOutProductDetail = () => {
   if (error) return <p>Error: {error}</p>;
 
   const {
-    status,
     submissionDate,
     name,
     email,
@@ -101,6 +117,9 @@ const AdminRentOutProductDetail = () => {
 
   return (
     <Box width={"100%"} mt={2}>
+      <Typography variant="h4" textAlign="center" gutterBottom>
+        Rent Out Product Detail
+      </Typography>
       <Card sx={{ p: 2 }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
@@ -111,10 +130,10 @@ const AdminRentOutProductDetail = () => {
               variant="h6"
               sx={{
                 textAlign: "center",
-                color: status === "approved" ? "green" : "red",
+                color: status === "Approved" ? "green" : status === "Rejected" ? "red" : "orange",
               }}
             >
-              Status: {status || "Pending"}
+              Status: {status}
             </Typography>
           </Grid>
           <Grid item>
@@ -125,39 +144,82 @@ const AdminRentOutProductDetail = () => {
         </Grid>
       </Card>
 
+      {/* Customer Information Table */}
       <Card className="mt-2" sx={{ p: 2 }}>
         <CardHeader title="Customer Information" />
-        <Box>
-          <Typography>Name: {name}</Typography>
-          <Typography>Email: {email}</Typography>
-          <Typography>Contact: {contact}</Typography>
-          <Typography>Pickup Location: {pickupLocation || "N/A"}</Typography>
-        </Box>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell><strong>Field</strong></TableCell>
+                <TableCell><strong>Details</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>{name}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Email</TableCell>
+                <TableCell>{email}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Contact</TableCell>
+                <TableCell>{contact}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Pickup Location</TableCell>
+                <TableCell>{pickupLocation || "N/A"}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Card>
 
+      {/* Product Information Table */}
       <Card className="mt-2" sx={{ p: 2 }}>
         <CardHeader title="Product Information" />
-        <Box>
-          <Typography>Item Name: {itemName}</Typography>
-          <Typography>Brand: {brand || "N/A"}</Typography>
-          <Typography>Category: {category?.name || "N/A"}</Typography>
-          <Typography>
-            Rental Price: {rentalPrice ? `$${rentalPrice}` : "N/A"}
-          </Typography>
-          <Typography>
-            Purchase Price: {purchasePrice ? `$${purchasePrice}` : "N/A"}
-          </Typography>
-          <Typography>
-            Available From:{" "}
-            {availableFrom
-              ? new Date(availableFrom).toLocaleDateString()
-              : "N/A"}
-          </Typography>
-          <Typography>
-            Available To:{" "}
-            {availableTo ? new Date(availableTo).toLocaleDateString() : "N/A"}
-          </Typography>
-        </Box>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell><strong>Field</strong></TableCell>
+                <TableCell><strong>Details</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>Item Name</TableCell>
+                <TableCell>{itemName}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Brand</TableCell>
+                <TableCell>{brand || "N/A"}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Category</TableCell>
+                <TableCell>{category?.name || "N/A"}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Rental Price</TableCell>
+                <TableCell>{rentalPrice ? `$${rentalPrice}` : "N/A"}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Purchase Price</TableCell>
+                <TableCell>{purchasePrice ? `$${purchasePrice}` : "N/A"}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Available From</TableCell>
+                <TableCell>{availableFrom ? new Date(availableFrom).toLocaleDateString() : "N/A"}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Available To</TableCell>
+                <TableCell>{availableTo ? new Date(availableTo).toLocaleDateString() : "N/A"}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Card>
 
       <Card className="mt-2" sx={{ p: 2 }}>
@@ -220,8 +282,8 @@ const AdminRentOutProductDetail = () => {
         </Button>
       </Box>
 
-      {/* Image Modal for fullscreen view */}
-      <Dialog open={openImageModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
+    {/* Image Modal for fullscreen view */}
+    <Dialog open={openImageModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
         <DialogContent sx={{ position: "relative" }}>
           <IconButton
             onClick={handleCloseModal}
@@ -271,24 +333,22 @@ const AdminRentOutProductDetail = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Confirmation Dialog for Approve/Reject */}
+      {/* Confirmation Dialog */}
       <Dialog open={openConfirmDialog} onClose={() => setOpenConfirmDialog(false)}>
         <DialogTitle>
-          {confirmAction === "approve" ? "Confirm Approval" : "Confirm Rejection"}
+          {confirmAction === "approve" ? "Approve Request" : "Reject Request"}
         </DialogTitle>
         <DialogContent>
           <Typography>
             {confirmAction === "approve"
-              ? "Are you sure you want to approve this product?"
-              : "Are you sure you want to reject this product?"}
+              ? "Are you sure you want to approve this request?"
+              : "Are you sure you want to reject this request?"}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={confirmActionHandler} color="secondary">
-            Confirm
+          <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
+          <Button onClick={confirmActionHandler} color="primary">
+            {confirmAction === "approve" ? "Approve" : "Reject"}
           </Button>
         </DialogActions>
       </Dialog>

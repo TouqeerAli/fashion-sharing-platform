@@ -3,9 +3,11 @@ package com.azmi.service;
 import com.azmi.modal.Category;
 import com.azmi.modal.RentOut;
 import com.azmi.modal.RentOutProductImages;
+import com.azmi.modal.User;
 import com.azmi.repository.CategoryRepository;
 import com.azmi.repository.RentOutProductImagesRepository;
 import com.azmi.repository.RentOutRepository;
+import com.azmi.repository.UserRepository;
 import com.azmi.request.CreateRentOutRequest;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -35,9 +37,12 @@ public class RentOutServiceImplementation implements RentOutService{
 
 
 
+<<<<<<< HEAD
     @Autowired
     private JavaMailSender mailSender;  // Email sender instance
 
+=======
+>>>>>>> 7f70dd89aa72415b6353eb4ea337abe27eb2fe81
     ModelMapper modelMapper;
 
 
@@ -46,15 +51,26 @@ public class RentOutServiceImplementation implements RentOutService{
     
     private CategoryRepository categoryRepository;
 
-    public RentOutServiceImplementation(CategoryRepository categoryRepository,RentOutRepository rentOutRepository,ModelMapper modelMapper,RentOutProductImagesRepository rentOutProductImagesRepository) {
+    private final UserRepository userRepository;
+
+    public RentOutServiceImplementation(CategoryRepository categoryRepository, RentOutRepository rentOutRepository,
+                                        ModelMapper modelMapper, RentOutProductImagesRepository rentOutProductImagesRepository,
+                                        UserRepository userRepository) {
         this.rentOutRepository = rentOutRepository;
-        this.modelMapper=modelMapper;
-        this.rentOutProductImagesRepository=rentOutProductImagesRepository;
-        this.categoryRepository=categoryRepository;
+        this.modelMapper = modelMapper;
+        this.rentOutProductImagesRepository = rentOutProductImagesRepository;
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public RentOut createRentOut(CreateRentOutRequest rentOutRequest, List<MultipartFile> images) throws IOException {
+    public RentOut createRentOut(CreateRentOutRequest rentOutRequest, List<MultipartFile> images, Long userId) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.isRegistered()) {
+            throw new RuntimeException("Only registered users can create rent outs");
+        }
         System.out.println("Haa hitty");
         System.out.println("Test print"+rentOutRequest.getTopLevelCategory());
         Category topLevel=categoryRepository.findByName(rentOutRequest.getTopLevelCategory());
@@ -102,13 +118,11 @@ public class RentOutServiceImplementation implements RentOutService{
         rentOut.setPurchasePrice(rentOutRequest.getPurchasePrice());
         rentOut.setAvailableFrom(rentOutRequest.getAvailableFrom());
         rentOut.setAvailableTo(rentOutRequest.getAvailableTo());
-        rentOut.setName(rentOutRequest.getName());
-        rentOut.setEmail(rentOutRequest.getEmail());
-        rentOut.setContact(rentOutRequest.getContact());
         rentOut.setPickupLocation(rentOutRequest.getPickupLocation());
         rentOut.setTermsAndConditions(rentOutRequest.getTermsAndConditions());
         rentOut.setStatus("Pending");
         rentOut.setCategory(thirdLevel);
+        rentOut.setUser(user);
 
         if (images != null && !images.isEmpty()) {
             List<RentOutProductImages> rentOutProductImages = saveImages(images, rentOut);
@@ -117,6 +131,11 @@ public class RentOutServiceImplementation implements RentOutService{
             rentOutProductImagesRepository.saveAll(rentOutProductImages); // Save image entities
         }
         return rentOut;
+    }
+
+    @Override
+    public List<RentOut> getRentOutsByUserId(Long userId) {
+        return rentOutRepository.findByUserId(userId);
     }
     private List<RentOutProductImages> saveImages(List<MultipartFile> images, RentOut rentOut) throws IOException {
 
@@ -221,6 +240,8 @@ public class RentOutServiceImplementation implements RentOutService{
         return rentOutRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RentOut request not found"));
     }
+
+
 
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings

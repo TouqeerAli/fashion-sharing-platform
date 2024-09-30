@@ -66,6 +66,10 @@ const AdminRentOutProducts = () => {
   const handlePaginationChange = (event, value) => {
     setPage(value);
   };
+  
+  const handleViewDetails = (id) => {
+    navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+  };
 
   const handleViewDetails = (id) => {
     navigate(`/admin/rentoutproduct/${id}`);
