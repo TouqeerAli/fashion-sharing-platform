@@ -37,12 +37,10 @@ public class RentOutServiceImplementation implements RentOutService{
 
 
 
-<<<<<<< HEAD
+
     @Autowired
     private JavaMailSender mailSender;  // Email sender instance
 
-=======
->>>>>>> 7f70dd89aa72415b6353eb4ea337abe27eb2fe81
     ModelMapper modelMapper;
 
 

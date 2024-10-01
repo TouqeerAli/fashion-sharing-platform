@@ -28,9 +28,9 @@ public class RentOut {
     private LocalDate availableFrom;
     private LocalDate availableTo;
 
-//    private String name;
-//    private String email;
-//    private String contact;
+   private String name;
+   private String email;
+   private String contact;
 
 
     @ManyToOne
@@ -218,7 +218,39 @@ public class RentOut {
         this.images = images;
     }
 
-    public RentOut(Long id, String itemName, String brand, Category category, String size, String color, String description, Double rentalPrice, Double purchasePrice, LocalDate availableFrom, LocalDate availableTo,String pickupLocation, Boolean termsAndConditions) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public RentOut(Long id, String itemName, String brand, Category category, String size, String color, String description, Double rentalPrice, Double purchasePrice, LocalDate availableFrom, LocalDate availableTo, String pickupLocation, Boolean termsAndConditions) {
         this.id = id;
         this.itemName = itemName;
         this.brand = brand;
@@ -230,9 +262,9 @@ public class RentOut {
         this.purchasePrice = purchasePrice;
         this.availableFrom = availableFrom;
         this.availableTo = availableTo;
-//        this.name = name;
-//        this.email = email;
-//        this.contact = contact;
+        this.name = name;
+        this.email = email;
+        this.contact = contact;
         this.pickupLocation = pickupLocation;
         this.termsAndConditions = termsAndConditions;
     }

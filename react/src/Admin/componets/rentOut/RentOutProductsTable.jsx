@@ -71,9 +71,6 @@ const AdminRentOutProducts = () => {
     navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
   };
 
-  const handleViewDetails = (id) => {
-    navigate(`/admin/rentoutproduct/${id}`);
-  };
 
 
   // Handle size change from dropdown
