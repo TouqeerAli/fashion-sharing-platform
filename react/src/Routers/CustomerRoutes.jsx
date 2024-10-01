@@ -19,7 +19,8 @@ import Checkout from "../customer/Components/Checkout/Checkout";
 import Footer from "../customer/Components/footer/Footer";
 import PaymentSuccess from "../customer/Components/paymentSuccess/PaymentSuccess";
 import RateProduct from "../customer/Components/ReviewProduct/RateProduct";
-import Profile from "../customer/Components/Profile/Profile";
+import Profile  from "../customer/Components/Profile/Profile";
+import RentOutDetail from "../customer/Components/Profile/RentOutDetails";
 // import NotFound from "../Pages/Notfound";
 
 const CustomerRoutes = () => {
@@ -51,6 +52,8 @@ const CustomerRoutes = () => {
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/account/order" element={<Order />}></Route>
         <Route path="/account/profile" element={<Profile />}></Route>
+        <Route path="/account/profile/rentouts" element={<Profile />}></Route>
+        <Route path="/account/profile/rentout/:id" element={<Profile/>}></Route>
         <Route path="/account/order/:orderId" element={<OrderDetails />}></Route>
         <Route path="/account/rate/:productId" element={<RateProduct />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
