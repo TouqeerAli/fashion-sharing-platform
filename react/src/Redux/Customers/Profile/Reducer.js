@@ -6,7 +6,10 @@ const initialState = {
   userInfo: null,
   rentOuts: [],
   loading: false,
-  error: null
+  error: null,
+  rentOutDetails: null,
+  loadingDetails: false,
+  errorDetails: null
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -30,7 +33,8 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        rentOuts: action.payload
+        rentOuts: action.payload.requests,
+        totalPages: action.payload.totalPages,
       };
     
     case types.FETCH_USER_INFO_FAILURE:
@@ -45,6 +49,25 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         activeTab: action.payload
+      };
+
+    case types.FETCH_RENT_OUT_DETAILS_REQUEST:
+      return {
+        ...state,
+        loadingDetails: true,
+        errorDetails: null,
+      };
+    case types.FETCH_RENT_OUT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        rentOutDetails: action.payload,
+        loadingDetails: false,
+      };
+    case types.FETCH_RENT_OUT_DETAILS_FAILURE:
+      return {
+        ...state,
+        loadingDetails: false,
+        errorDetails: action.payload,
       };
     
     default:
