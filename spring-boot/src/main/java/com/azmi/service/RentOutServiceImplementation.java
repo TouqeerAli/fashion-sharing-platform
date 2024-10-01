@@ -132,8 +132,13 @@ public class RentOutServiceImplementation implements RentOutService{
     }
 
     @Override
-    public List<RentOut> getRentOutsByUserId(Long userId) {
-        return rentOutRepository.findByUserId(userId);
+    public Page<RentOut> getRentOutsByUserId(Long userId, String status, Pageable pageable) {
+        if (status != null && !status.isEmpty()) {
+            return rentOutRepository.findByUserIdAndStatus(userId,status,pageable);
+        } else {
+            return rentOutRepository.findByUserId(userId,pageable);
+        }
+
     }
     private List<RentOutProductImages> saveImages(List<MultipartFile> images, RentOut rentOut) throws IOException {
 

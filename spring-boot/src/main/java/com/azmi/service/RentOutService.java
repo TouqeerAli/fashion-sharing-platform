@@ -13,7 +13,7 @@ import java.util.List;
 public interface RentOutService {
 
     RentOut createRentOut(CreateRentOutRequest rentOutRequest, List<MultipartFile> images, Long userId) throws IOException;
-    List<RentOut> getRentOutsByUserId(Long userId);
+    Page<RentOut> getRentOutsByUserId(Long userId,String status, Pageable pageable);
 
     RentOut updateRentOutStatus(Long id, String status);
 

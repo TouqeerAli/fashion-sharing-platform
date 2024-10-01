@@ -11,6 +11,10 @@ import com.azmi.service.CustomUserDetailsService;
 import com.azmi.service.RentOutService;
 import com.azmi.user.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +79,12 @@ public class UserRentOutController {
     }
 
     @GetMapping("/my-rentouts")
-    public ResponseEntity<List<RentOut>> getUserRentOuts() {
+    public ResponseEntity<Page<RentOut>> getUserRentOuts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "DESC") String sortOrder
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
@@ -86,13 +95,23 @@ public class UserRentOutController {
                 throw new UsernameNotFoundException("User not found with email " + username);
             }
 
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "availableFrom"));
+
             // Fetch the list of products the user has rented out
-            List<RentOut> rentOuts = rentOutService.getRentOutsByUserId(user.getId());
+            Page<RentOut> rentOuts = rentOutService.getRentOutsByUserId(user.getId(), status, pageable);
 
             return new ResponseEntity<>(rentOuts, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
+
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<RentOut> getUserRentOut(@PathVariable Long id) {
+
+        RentOut rentOutProduct = rentOutService.getRentOutProduct(id);
+        return new ResponseEntity<>(rentOutProduct, HttpStatus.OK);
     }
 
 }
