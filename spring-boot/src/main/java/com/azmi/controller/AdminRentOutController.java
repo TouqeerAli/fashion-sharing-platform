@@ -2,6 +2,7 @@ package com.azmi.controller;
 
 import com.azmi.modal.RentOut;
 import com.azmi.service.RentOutService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.List;
     @RequestMapping("/api/admin/rentout")
 public class AdminRentOutController {
 
+    @Autowired
     private RentOutService rentOutService;
 
     public AdminRentOutController(RentOutService rentOutService) {

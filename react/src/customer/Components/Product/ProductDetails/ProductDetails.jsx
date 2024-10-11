@@ -491,14 +491,14 @@ export default function ProductDetails() {
         </section>
 
         {/* similer product */}
-        <section className=" pt-10">
+        {/* <section className=" pt-10">
           <h1 className="py-5 text-xl font-bold">Similer Products</h1>
           <div className="flex flex-wrap space-y-5">
             {gounsPage1.map((item) => (
               <HomeProductCard product={item} />
             ))}
           </div>
-        </section>
+        </section> */}
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import com.azmi.repository.UserRepository;
 import com.azmi.request.CreateRentOutRequest;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,7 @@ public class RentOutServiceImplementation implements RentOutService{
 
 
 
+    @Autowired
     ModelMapper modelMapper;
 
 
@@ -218,7 +220,7 @@ public class RentOutServiceImplementation implements RentOutService{
 
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings
-        TypeMap<CreateRentOutRequest, RentOut> typeMap = modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
+        TypeMap<CreateRentOutRequest, RentOut> typeMap = this.modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
 
         // Skip the category and thirdLevelCategory setters
         typeMap.addMappings(mapper -> {
