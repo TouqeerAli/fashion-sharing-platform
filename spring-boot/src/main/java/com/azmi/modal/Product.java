@@ -1,24 +1,11 @@
 package com.azmi.modal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.Date;
+import java.util.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Product {
@@ -32,6 +19,37 @@ public class Product {
 
     @Column(name = "description")
     private String description;
+
+
+	private String itemName;
+	private String size;
+
+	private Double rentalPrice;
+	private Double purchasePrice;
+
+	private LocalDate availableFrom;
+	private LocalDate availableTo;
+
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdDate;
+
+
+	/* @Lob*/
+	// List of image paths (for multiple images)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<RentOutProductImages> images;// Storing images in a separate table
+
+	private String pickupLocation;
+
+	private Boolean termsAndConditions;
+
+	private String status;
+
 
     @Column(name = "price")
     private int price;
@@ -79,9 +97,105 @@ public class Product {
 		
 	}
 
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public Double getRentalPrice() {
+		return rentalPrice;
+	}
+
+	public void setRentalPrice(Double rentalPrice) {
+		this.rentalPrice = rentalPrice;
+	}
+
+	public Double getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(Double purchasePrice) {
+		this.purchasePrice = purchasePrice;
+	}
+
+	public LocalDate getAvailableFrom() {
+		return availableFrom;
+	}
+
+	public void setAvailableFrom(LocalDate availableFrom) {
+		this.availableFrom = availableFrom;
+	}
+
+	public LocalDate getAvailableTo() {
+		return availableTo;
+	}
+
+	public void setAvailableTo(LocalDate availableTo) {
+		this.availableTo = availableTo;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public List<RentOutProductImages> getImages() {
+		return images;
+	}
+
+	public void setImages(List<RentOutProductImages> images) {
+		this.images = images;
+	}
+
+	public String getPickupLocation() {
+		return pickupLocation;
+	}
+
+	public void setPickupLocation(String pickupLocation) {
+		this.pickupLocation = pickupLocation;
+	}
+
+	public Boolean getTermsAndConditions() {
+		return termsAndConditions;
+	}
+
+	public void setTermsAndConditions(Boolean termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Product(Long id, String title, String description, int price, int discountedPrice, int discountPersent,
-			int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings,
-			List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
+				   int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings,
+				   List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
 		super();
 		this.id = id;
 		this.title = title;
