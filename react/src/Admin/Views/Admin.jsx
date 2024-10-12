@@ -37,10 +37,10 @@ const Dashboard = () => {
       <ThemeProvider theme={customTheme}>
         <AdminPannel>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            {/* <Grid item xs={12} md={4}>
               <Achivement />
-            </Grid>
-            <Grid item xs={12} md={8}>
+            </Grid> */}
+            {/* <Grid item xs={12} md={8}>
               <MonthlyOverview />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
@@ -48,8 +48,8 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <TotalEarning />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            </Grid> */}
+            {/* <Grid item xs={12} md={6} lg={4}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <CardStatsVertical
@@ -94,7 +94,7 @@ const Dashboard = () => {
                   />
                 </Grid>
               </Grid>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} md={6} lg={4}>
             <CustomersTable />
             </Grid>

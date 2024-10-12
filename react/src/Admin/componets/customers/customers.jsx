@@ -152,7 +152,7 @@ function CustomerList() {
         <Table sx={{ minWidth: 390 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-            <TableCell>User Id</TableCell>
+            <TableCell>S.No</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Contact</TableCell>
