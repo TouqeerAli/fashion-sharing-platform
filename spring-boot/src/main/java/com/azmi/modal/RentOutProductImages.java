@@ -18,6 +18,19 @@ public class RentOutProductImages {
     @JoinColumn(name = "rent_out_id")  // This should map to RentOut's 'id' field
     private RentOut rentOut;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")  // This should map to RentOut's 'id' field
+    private Product product;
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     // Getters and setters
     public Long getId() {
         return id;

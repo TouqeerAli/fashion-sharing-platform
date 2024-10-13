@@ -38,9 +38,10 @@ public class AdminRentOutController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String status,
-            @RequestParam(defaultValue = "DESC") String sortOrder) {
+            @RequestParam(defaultValue = "DESC") String sort) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "createdDate"));
+        System.out.println("sort"+sort);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "createdDate"));
 
         Page<RentOut> requests = rentOutService.findByStatusAndSort(status, pageable);
         return ResponseEntity.ok(requests);

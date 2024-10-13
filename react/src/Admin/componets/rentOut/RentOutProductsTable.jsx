@@ -43,6 +43,7 @@ const AdminRentOutProducts = () => {
 
   // Fetch rent out requests on component mount and when page/size changes
   useEffect(() => {
+    console.log(dateOrder);
     dispatch(fetchRentOutRequests(page - 1, size, status, dateOrder)); // page-1 because backend expects zero-indexed
   }, [dispatch, page, size, status, dateOrder]);
 
@@ -66,9 +67,14 @@ const AdminRentOutProducts = () => {
     setPage(value);
   };
   
+  // const handleViewDetails = (id) => {
+  //   navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+  // };
+
   const handleViewDetails = (id) => {
-    navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+    navigate(`/admin/rentoutproduct/${id}`);
   };
+
 
   // Handle size change from dropdown
   const handleSizeChange = (event) => {
@@ -112,9 +118,9 @@ const handleDateOrderChange = (event) => {
             <InputLabel>Status</InputLabel>
             <Select value={status} onChange={handleStatusChange} label="Status">
               <MenuItem value="">All</MenuItem>
-              <MenuItem value="ACTIVE">Active</MenuItem>
+              <MenuItem value="APPROVED">Approved</MenuItem>
               <MenuItem value="PENDING">Pending</MenuItem>
-              <MenuItem value="REJECT">Reject</MenuItem>
+              <MenuItem value="REJECTED">Rejected</MenuItem>
             </Select>
           </FormControl>
 

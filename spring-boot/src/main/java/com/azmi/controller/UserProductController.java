@@ -41,7 +41,7 @@ public class UserProductController {
 		
 		Page<Product> res= productService.getAllProduct(category, color, size, minPrice, maxPrice, minDiscount, sort,stock,pageNumber,pageSize);
 		
-		System.out.println("complete products");
+		System.out.println("complete products"+res.getContent());
 		return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
 		
 	}
