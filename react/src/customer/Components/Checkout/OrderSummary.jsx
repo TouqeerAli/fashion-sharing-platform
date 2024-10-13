@@ -53,20 +53,20 @@ const handleCreatePayment=()=>{
             <div className="space-y-3 font-semibold">
               <div className="flex justify-between pt-3 text-black ">
                 <span>Price ({order.order?.totalItem} item)</span>
-                <span>₹{order.order?.totalPrice}</span>
+                <span>PKR.{order.order?.totalPrice}</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Discount</span>
                 <span className="text-green-700">-₹{order.order?.discounte}</span>
-              </div>
+              </div> */}
               <div className="flex justify-between">
                 <span>Delivery Charges</span>
-                <span className="text-green-700">Free</span>
+                <span className="text-green-700">PKR.200</span>
               </div>
               <hr />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total Amount</span>
-                <span className="text-green-700">₹{order.order?.totalDiscountedPrice}</span>
+                <span className="text-green-700">PKR.{order.order?.totalDiscountedPrice}</span>
               </div>
             </div>
 

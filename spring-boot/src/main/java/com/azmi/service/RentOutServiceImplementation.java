@@ -35,7 +35,6 @@ public class RentOutServiceImplementation implements RentOutService{
 
     @Autowired
     private JavaMailSender mailSender;  // Email sender instance
-
     ModelMapper modelMapper;
 
 
@@ -268,7 +267,7 @@ public class RentOutServiceImplementation implements RentOutService{
 
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings
-        TypeMap<CreateRentOutRequest, RentOut> typeMap = modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
+        TypeMap<CreateRentOutRequest, RentOut> typeMap = this.modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
 
         // Skip the category and thirdLevelCategory setters
         typeMap.addMappings(mapper -> {

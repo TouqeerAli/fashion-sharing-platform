@@ -29,7 +29,7 @@ const Homepage = () => {
         <HomeProductSection section="t-shirts" />
         <HomeProductSection section="shirts" />
         <HomeProductSection section="tops" />
-        <HomeProductSection section="Dresses" />
+        <HomeProductSection section="women_dress" />
         <HomeProductSection section="Saree" />
         <HomeProductSection section="Lengha Choli" />
         <RentOutClosetSection/>
