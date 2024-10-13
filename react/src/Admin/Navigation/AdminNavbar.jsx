@@ -185,7 +185,7 @@ export default function AdminNavbar({handleSideBarViewInMobile}) {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
                 <MailIcon />
@@ -211,7 +211,7 @@ export default function AdminNavbar({handleSideBarViewInMobile}) {
             >
               <AccountCircle />
             </IconButton>
-          </Box>
+          </Box> */}
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"

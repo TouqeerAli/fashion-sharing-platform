@@ -22,6 +22,7 @@ public interface RentOutService {
     Page<RentOut> getAllRentOutRequestsWithPage(int page, int size);
 
 
+
     public Page<RentOut> findByStatusAndSort(String status, Pageable pageable);
 
 

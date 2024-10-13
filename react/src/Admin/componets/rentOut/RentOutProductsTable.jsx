@@ -184,7 +184,7 @@ const handleDateOrderChange = (event) => {
                     </TableCell>
 
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.rentalPrice != null ? `$${item.rentalPrice}` : "N/A"}
+                      {item.rentalPrice != null ? `${item.rentalPrice} RS` : "N/A"}
                     </TableCell>
 
                     <TableCell sx={{ textAlign: "center" }}>

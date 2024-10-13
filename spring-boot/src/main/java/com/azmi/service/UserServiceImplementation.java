@@ -1,5 +1,6 @@
 package com.azmi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -48,5 +49,11 @@ public class UserServiceImplementation implements UserService {
 		System.out.println("email user"+user.getEmail());
 		return user;
 	}
+
+	@Override
+	public List<User> getAllCustomers() {
+		return userRepository.findAll();
+	}
+
 
 }
