@@ -23,7 +23,8 @@ const rentOutItemFailure = (error) => ({
 
 // Thunk Action for handling API call with error handling
 export const submitRentOutItem = (formData) => async (dispatch, getState) => {
-    console.log("Api calls")    
+
+    console.log("Api calls",formData["isAvailableToSell"])    
     dispatch(rentOutItemRequest()); // Dispatch request action
     const { auth } = getState();
     const token = auth?.jwt || localStorage.getItem("jwt");
