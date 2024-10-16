@@ -121,12 +121,13 @@ const HomeProductSection = ({ section }) => {
   const { loading, products, error } = customersProduct;
 
 
+
   useEffect(() => {
     // Example filter object to fetch products (customize this as needed)
     const reqData = {
-      colors: ['Red', 'Blue', 'Black', 'black', 'White'],
-      sizes: ['M', 'L'],
-      minPrice: 50,
+      colors: ['Red', 'Blue', 'Black', 'black', 'White','Brown','Green','green'],
+      sizes: ['M', 'S','L'],
+      minPrice: 0,
       maxPrice: 10000,
       minDiscount: 10,
       category: section,
@@ -138,7 +139,10 @@ const HomeProductSection = ({ section }) => {
 
     // Dispatch action to fetch products from the API
     dispatch(findProducts(reqData));
+  
   }, [dispatch, section]);
+  
+  
 
   const slidePrev = () => setActiveIndex(activeIndex - 1);
   const slideNext = () => setActiveIndex(activeIndex + 1);

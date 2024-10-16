@@ -191,9 +191,9 @@ export default function Navigation() {
                                 />
                                 {item.name}
                               </a>
-                              <p aria-hidden="true" className="mt-1">
+                              {/* <p aria-hidden="true" className="mt-1">
                                 Shop now
-                              </p>
+                              </p> */}
                             </div>
                           ))}
                         </div>
@@ -270,9 +270,9 @@ export default function Navigation() {
       </Transition.Root>
 
       <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+        {/* <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
           Get free delivery on orders over $100
-        </p>
+        </p> */}
 
         <nav aria-label="Top" className="mx-auto">
           <div className="border-b border-gray-200">
@@ -517,7 +517,7 @@ export default function Navigation() {
                 </div>
 
                 {/* Search */}
-                <div className="flex lg:ml-6">
+                {/* <div className="flex lg:ml-6">
                   <p className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <MagnifyingGlassIcon
@@ -525,7 +525,7 @@ export default function Navigation() {
                       aria-hidden="true"
                     />
                   </p>
-                </div>
+                </div> */}
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">

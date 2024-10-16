@@ -16,6 +16,8 @@ import com.azmi.exception.UserException;
 import com.azmi.modal.User;
 import com.azmi.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -52,6 +54,14 @@ public class UserController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
+	}
+
+
+
+	@GetMapping("/allCustomers")
+	public ResponseEntity<List<User>> getAllCustomers() {
+		List<User> customers=this.userService.getAllCustomers();
+		return new ResponseEntity<>(customers, HttpStatus.OK);
 	}
 
 

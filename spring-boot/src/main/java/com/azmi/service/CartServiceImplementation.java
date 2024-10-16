@@ -27,7 +27,7 @@ public class CartServiceImplementation implements CartService{
 
 	@Override
 	public Cart createCart(User user) {
-		
+		System.out.println("Cart created for user :"+user.getFirstName());
 		Cart cart = new Cart();
 		cart.setUser(user);
 		Cart createdCart=cartRepository.save(cart);
@@ -47,7 +47,7 @@ public class CartServiceImplementation implements CartService{
 		
 		cart.setTotalPrice(totalPrice);
 		cart.setTotalItem(cart.getCartItems().size());
-		cart.setTotalDiscountedPrice(totalDiscountedPrice);
+		cart.setTotalDiscountedPrice((totalDiscountedPrice)+200);
 		cart.setDiscounte(totalPrice-totalDiscountedPrice);
 		cart.setTotalItem(totalItem);
 		
@@ -57,12 +57,16 @@ public class CartServiceImplementation implements CartService{
 
 	@Override
 	public String addCartItem(Long userId, AddItemRequest req) throws ProductException {
+		System.out.println("User Id in add cart item :"+userId);
+
 		Cart cart=cartRepository.findByUserId(userId);
+		System.out.println("Cart in add cart item :"+cart);
 		Product product=productService.findProductById(req.getProductId());
 		
 		CartItem isPresent=cartItemService.isCartItemExist(cart, product, req.getSize(),userId);
 		
 		if(isPresent == null) {
+			System.out.println("Is Prsent : "+isPresent);
 			CartItem cartItem = new CartItem();
 			cartItem.setProduct(product);
 			cartItem.setCart(cart);
@@ -70,7 +74,9 @@ public class CartServiceImplementation implements CartService{
 			cartItem.setUserId(userId);
 			
 			
-			int price=req.getQuantity()*product.getDiscountedPrice();
+			int price= (int) (req.getQuantity()*product.getRentalPrice());
+
+
 			cartItem.setPrice(price);
 			cartItem.setSize(req.getSize());
 			

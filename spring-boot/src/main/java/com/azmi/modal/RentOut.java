@@ -57,6 +57,7 @@ public class RentOut {
     //private Double securityDeposit;
     private String occasion;
     private Boolean termsAndConditions;
+
     @ManyToOne()
     @JoinColumn(name="category_id")
     private Category category;

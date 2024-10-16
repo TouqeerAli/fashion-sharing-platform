@@ -1,15 +1,7 @@
 package com.azmi.service;
 
-import com.azmi.modal.Category;
-import com.azmi.modal.RentOut;
-import com.azmi.modal.RentOutSize;
-import com.azmi.modal.RentOutProductImages;
-import com.azmi.modal.User;
-import com.azmi.repository.CategoryRepository;
-import com.azmi.repository.RentOutProductImagesRepository;
-import com.azmi.repository.RentOutRepository;
-import com.azmi.repository.RentOutSizeRepository;
-import com.azmi.repository.UserRepository;
+import com.azmi.modal.*;
+import com.azmi.repository.*;
 import com.azmi.request.CreateRentOutRequest;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -37,11 +29,14 @@ public class RentOutServiceImplementation implements RentOutService{
 
     private static final String IMAGE_UPLOAD_DIR = "src/main/resources/static/img/rent-out_products_img";
 
+    @Autowired
+    ProductRepository productRepo;
 
 
 
     @Autowired
     private JavaMailSender mailSender;  // Email sender instance
+
 
     ModelMapper modelMapper;
 
@@ -223,14 +218,39 @@ public class RentOutServiceImplementation implements RentOutService{
         RentOut rentOut = rentOutRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RentOut request not found"));
 
-        String email = rentOut.getEmail();
+        String email = rentOut.getUser().getEmail();
 
         sendEmail(email);
 
-
-
-
         rentOut.setStatus(status);
+
+
+        //After approving the rentout, add it to product table to show in the frontend
+        Product product = new Product();
+        product.setItemName(rentOut.getItemName());
+        product.setBrand(rentOut.getBrand());
+        product.setSize(rentOut.getSize());
+        product.setColor(rentOut.getColor());
+        product.setDescription(rentOut.getDescription());
+        product.setRentalPrice(rentOut.getRentalPrice());
+        product.setPurchasePrice(rentOut.getPurchasePrice());
+        product.setAvailableFrom(rentOut.getAvailableFrom());
+        product.setAvailableTo(rentOut.getAvailableTo());
+        product.setCreatedDate(rentOut.getCreatedDate());
+        product.setPickupLocation(rentOut.getPickupLocation());
+        product.setTermsAndConditions(rentOut.getTermsAndConditions());
+        product.setStatus(rentOut.getStatus());
+        product.setCategory(rentOut.getCategory());
+        product.setUser(rentOut.getUser());
+
+        List<RentOutProductImages> productImages = this.rentOutProductImagesRepository.findByRentOutId(rentOut.getId());
+        for(RentOutProductImages image : productImages){
+            image.setProduct(product);
+        }
+
+        System.out.println("Before Product is saved");
+        this.productRepo.save(product);
+        System.out.println("Product is saved");
         return rentOutRepository.save(rentOut);
     }
 
@@ -244,7 +264,7 @@ public class RentOutServiceImplementation implements RentOutService{
             // Send the email
             mailSender.send(message);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to send email", e);
+            throw new RuntimeException("Failed to send email".concat(e.getMessage()), e);
         }
     }
 
@@ -284,7 +304,7 @@ public class RentOutServiceImplementation implements RentOutService{
 
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings
-        TypeMap<CreateRentOutRequest, RentOut> typeMap = modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
+        TypeMap<CreateRentOutRequest, RentOut> typeMap = this.modelMapper.typeMap(CreateRentOutRequest.class, RentOut.class);
 
         // Skip the category and thirdLevelCategory setters
         typeMap.addMappings(mapper -> {

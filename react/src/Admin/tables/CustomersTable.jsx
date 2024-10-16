@@ -7,9 +7,11 @@ import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
+import React, { useState, useEffect } from "react";
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import { Avatar, CardHeader } from '@mui/material'
+import api from "../../config/api";
 import { useNavigate } from 'react-router-dom'
 
 const rows = [
@@ -92,16 +94,46 @@ const rows = [
   }
 ]
 
-const statusObj = {
-  applied: { color: 'info' },
-  rejected: { color: 'error' },
-  current: { color: 'primary' },
-  resigned: { color: 'warning' },
-  professional: { color: 'success' }
-}
-
-const CustomersTable = () => {
+function CustomerList() {
   const navigate=useNavigate();
+  const [customers, setCustomers] = useState([]); // State to store the fetched customer data
+  const [loading, setLoading] = useState(true); // Loading state to handle loading status
+  const [error, setError] = useState(null); // State to handle errors if any
+
+  // Function to fetch customer data from Spring Boot backend
+  const fetchCustomers = async () => {
+    try {
+      const response = await api.get(`/api/users/allCustomers`); // Make sure the URL is correct
+      // if (!response.ok) {
+      //   throw new Error('Failed to fetch customers');
+      // }
+      console.log("customers"+JSON.stringify(response.data));
+      const data = response.data;
+       // Parse the JSON response
+      setCustomers(data); // Set the fetched data to state
+      setLoading(false); // Set loading to false once data is fetched
+    } catch (err) {
+      console.error('Error fetching customers:', err);
+      setError(err.message); // Set the error state
+      setLoading(false); // Stop loading in case of an error
+    }
+  };
+
+  // useEffect to fetch the data when the component mounts
+  useEffect(() => {
+    fetchCustomers();
+  }, []); // Empty array ensures this runs only once when the component mounts
+
+  // Display loading state
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Display error if there is one
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  
   return (
     <Card>
       <CardHeader
@@ -117,21 +149,23 @@ const CustomersTable = () => {
         <Table sx={{ minWidth: 390 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-            <TableCell>Image</TableCell>
+            <TableCell>S.No</TableCell>
+            
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell>Contact</TableCell>
               
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(0,5).map(item => (
-              <TableRow hover key={item.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                <TableCell> <Avatar alt={item.name} src={item.image} /> </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email}</TableCell>
+          {customers.map((customer, index) => (
+              <TableRow hover key={customer.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+              <TableCell>{index+1}</TableCell>
+                <TableCell>{customer.firstName}{customer.lastName ? ' '+customer.lastName : ' '}</TableCell>
+                <TableCell>{customer.email}</TableCell>
+                <TableCell>{customer.contact ? customer.contact : ' '}</TableCell>
                 
                 
-               
                
               </TableRow>
             ))}
@@ -142,4 +176,5 @@ const CustomersTable = () => {
   )
 }
 
-export default CustomersTable
+
+export default CustomerList;

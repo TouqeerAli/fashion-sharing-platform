@@ -68,8 +68,8 @@ const AdminRentOutProducts = () => {
   };
   
   const handleViewDetails = (id) => {
-    navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
-  };
+     navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+   };
 
 
 
@@ -181,7 +181,7 @@ const handleDateOrderChange = (event) => {
                     </TableCell>
 
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.rentalPrice != null ? `$${item.rentalPrice}` : "N/A"}
+                      {item.rentalPrice != null ? `${item.rentalPrice} RS` : "N/A"}
                     </TableCell>
 
                     <TableCell sx={{ textAlign: "center" }}>

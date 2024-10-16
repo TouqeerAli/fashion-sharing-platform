@@ -15,6 +15,7 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(getCart(jwt));
+    console.log("get cart ",cart)
   }, [jwt]);
   return (
     <div className="">
@@ -36,20 +37,20 @@ const Cart = () => {
           <div className="space-y-3 font-semibold">
             <div className="flex justify-between pt-3 text-black ">
               <span>Price ({cart.cart?.totalItem} item)</span>
-              <span>₹{cart.cart.totalPrice}</span>
+              <span>PKR.{cart.cart.totalPrice}</span>
             </div>
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <span>Discount</span>
               <span className="text-green-700">-₹{cart.cart?.discounte}</span>
-            </div>
+            </div> */}
             <div className="flex justify-between">
               <span>Delivery Charges</span>
-              <span className="text-green-700">Free</span>
+              <span className="text-green-700">PKR.200</span>
             </div>
             <hr />
             <div className="flex justify-between font-bold text-lg">
               <span>Total Amount</span>
-              <span className="text-green-700">₹{cart.cart?.totalDiscountedPrice}</span>
+              <span className="text-green-700">PKR.{cart.cart?.totalDiscountedPrice}</span>
             </div>
           </div>
 

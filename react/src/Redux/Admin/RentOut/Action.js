@@ -122,6 +122,8 @@ export const fetchRentOutRequests = (page, size = 10, status = "", dateOrder = "
     // Make the API call with the query parameters
     const response = await api.get(`/api/admin/rentout/rentOutRequests${queryParams}`);
    
+    console.log("data"+JSON.stringify(response.data.content));
+
     dispatch({
       type: FETCH_RENT_OUT_PRODUCTS_SUCCESS,
       payload: {
