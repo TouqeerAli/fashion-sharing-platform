@@ -50,6 +50,7 @@ public class UserRentOutController {
     public ResponseEntity<RentOut> createRentOut(@ModelAttribute CreateRentOutRequest rentOutRequest,
                                                  @RequestParam("images") List<MultipartFile> images
                                                 ) throws IOException {
+        System.out.println("Selling test"+rentOutRequest.getAvailableToSell());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {

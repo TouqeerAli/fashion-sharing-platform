@@ -1,6 +1,7 @@
 package com.azmi.controller;
 
 import com.azmi.modal.RentOut;
+import com.azmi.modal.RentOutSize;
 import com.azmi.service.RentOutService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,6 +59,13 @@ public class AdminRentOutController {
         RentOut updatedRentOut = rentOutService.updateRentOutStatus(id, status);
         return ResponseEntity.ok(updatedRentOut);
     }
+
+    @PutMapping("/updateSize/{id}")
+    public ResponseEntity<RentOut> updateRentOutSize(@PathVariable Long id, @RequestBody RentOutSize rentOutSize) {
+        RentOut updatedRentOut = rentOutService.updateRentOutSize(id, rentOutSize);
+        return ResponseEntity.ok(updatedRentOut);
+    }
+
 
 }
 

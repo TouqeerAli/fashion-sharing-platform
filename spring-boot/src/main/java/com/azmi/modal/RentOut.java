@@ -32,6 +32,8 @@ public class RentOut {
    private String email;
    private String contact;
 
+   private Boolean isAvailableToSell;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -53,13 +55,27 @@ public class RentOut {
     private String pickupLocation;
     //private Boolean deliveryOptions;
     //private Double securityDeposit;
-
+    private String occasion;
     private Boolean termsAndConditions;
     @ManyToOne()
     @JoinColumn(name="category_id")
     private Category category;
 
     private String status;  // Can be "pending", "approved", or "rejected"
+
+    // One-to-One relationship with RentOutSize
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rent_out_size_id", referencedColumnName = "id")
+    private RentOutSize rentOutSize;
+
+
+    public RentOutSize getRentOutSize() {
+        return rentOutSize;
+    }
+
+    public void setRentOutSize(RentOutSize rentOutSize) {
+        this.rentOutSize = rentOutSize;
+    }
 
     public String getStatus() {
         return status;
@@ -248,6 +264,22 @@ public class RentOut {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Boolean getAvailableToSell() {
+        return isAvailableToSell;
+    }
+
+    public void setAvailableToSell(Boolean availableToSell) {
+        isAvailableToSell = availableToSell;
+    }
+
+    public String getOccasion() {
+        return occasion;
+    }
+
+    public void setOccasion(String occasion) {
+        this.occasion = occasion;
     }
 
     public RentOut(Long id, String itemName, String brand, Category category, String size, String color, String description, Double rentalPrice, Double purchasePrice, LocalDate availableFrom, LocalDate availableTo, String pickupLocation, Boolean termsAndConditions) {
