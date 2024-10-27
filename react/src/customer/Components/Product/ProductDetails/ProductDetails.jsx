@@ -350,16 +350,16 @@ export default function ProductDetails() {
 
                 {/* Rent Now and Add to Cart Buttons */}
                 <div className="mt-10 flex space-x-4">
-                  <Button
+                  {/* <Button
                     variant="contained"
                     sx={{ padding: ".8rem 2rem" }}
                     // onClick={() => handleRentNow(customersProduct.product?.id)}
                     onClick={() => navigate("/checkout?step=2")}
                   >
                     Rent Now
-                  </Button>
+                  </Button> */}
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     type="submit"
                     sx={{ padding: ".8rem 2rem" }}
                   >

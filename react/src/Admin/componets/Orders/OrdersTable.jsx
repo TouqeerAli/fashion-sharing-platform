@@ -181,7 +181,7 @@ const OrdersTable = () => {
                 >
                   <TableCell sx={{}}>
                   <AvatarGroup max={4} sx={{justifyContent: 'start'}}>
-      {item.orderItems.map((orderItem)=><Avatar  alt={item.title} src={orderItem.product.imageUrl} /> )}
+      {/* {item.orderItems.map((orderItem)=><Avatar  alt={item.title} src={orderItem.product.imageUrl} /> )} */}
     </AvatarGroup>
                     {" "}
                   </TableCell>
@@ -197,7 +197,7 @@ const OrdersTable = () => {
                         }}
                       >
                         {item?.orderItems.map((order) => (
-                          <span className=""> {order.product.title},</span>
+                          <span className=""> {order.product.itemName},</span>
                         ))}
                       </Typography>
                       <Typography variant="caption">

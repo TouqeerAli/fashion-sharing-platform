@@ -94,6 +94,14 @@
 			<version>3.3.2</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>27.1.1</version>
+		</dependency>
+
+
 
 
 		<!-- https://mvnrepository.com/artifact/com.razorpay/razorpay-java -->

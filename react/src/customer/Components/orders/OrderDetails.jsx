@@ -77,16 +77,16 @@ const OrderDetails = () => {
               <div className="flex  items-center ">
                 <img
                   className="w-[5rem] h-[5rem] object-cover object-top"
-                  src={item?.product.imageUrl}
+                  src={`http://localhost:5454/img/rent-out_products_img/${item?.product?.images?.[1]?.imagePath}`}
                   alt=""
                 />
                 <div className="ml-5 space-y-2">
-                  <p className="">{item.product.title}</p>
+                  <p className="">{item.product.itemName}</p>
                   <p className="opacity-50 text-xs font-semibold space-x-5">
-                    <span>Color: pink</span> <span>Size: {item.size}</span>
+                    <span>Color: {item?.product.color}</span> <span>Size: {item?.product.size}</span>
                   </p>
-                  <p>Seller: {item.product.brand}</p>
-                  <p>₹{item.price} </p>
+                  <p>Brand: {item.product.brand}</p>
+                  <p>PKR.{item?.product.rentalPrice+200} </p>
                 </div>
               </div>
             </Grid>

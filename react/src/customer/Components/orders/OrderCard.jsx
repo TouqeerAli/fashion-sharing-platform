@@ -18,20 +18,20 @@ const OrderCard = ({ item, order }) => {
           >
             <img
               className="w-[5rem] h-[5rem] object-cover object-top"
-              src={item?.product.imageUrl}
+              src={`http://localhost:5454/img/rent-out_products_img/${item?.product?.images?.[1]?.imagePath}`}
               alt=""
             />
             <div className="ml-5">
-              <p className="mb-2">{item?.product.title}</p>
+              <p className="mb-2">{item?.product.itemName}</p>
               <p className="opacity-50 text-xs font-semibold space-x-5">
-                <span>Size: {item?.size}</span>
+                <span>Size: {item?.product.size}</span>
               </p>
             </div>
           </div>
         </Grid>
 
         <Grid item xs={2}>
-          <p>₹{item?.price}</p>
+          <p>PKR.{item?.product.rentalPrice+200}</p>
         </Grid>
         <Grid item xs={4}>
           <p className="space-y-2 font-semibold">
@@ -41,20 +41,22 @@ const OrderCard = ({ item, order }) => {
                   sx={{ width: "15px", height: "15px" }}
                   className="text-green-600 p-0 mr-2 text-sm"
                 />
-                <span>Delivered On Mar 03</span>
+                <span>Your Item Has Been Delivered</span>
 
             </>
-            ):  <>
+            ):  
+            <>
                
                 <AdjustIcon
                 sx={{ width: "15px", height: "15px" }}
                 className="text-green-600 p-0 mr-2 text-sm"
               />
-              <span>Expected Delivery On Mar 03</span>
-              </>}
+              <span>Expected Delivery within 2 working days</span>
+              </>
+              }
             
           </p>
-          <p className="text-xs">Your Item Has Been Delivered</p>
+          {/* <p className="text-xs">Your Item Has Been Delivered</p> */}
           {item.orderStatus === "DELIVERED" && (
             <div
               onClick={() => navigate(`/account/rate/{id}`)}
