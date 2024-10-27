@@ -16,6 +16,12 @@ import {
   FETCH_RENTOUT_PRODUCT_DETAIL_FAILURE,
   APPROVE_RENTOUT_PRODUCT_SUCCESS,
   REJECT_RENTOUT_PRODUCT_SUCCESS,
+  ADD_SIZE_REQUEST,
+  ADD_SIZE_SUCCESS,
+  ADD_SIZE_FAILURE,
+  UPDATE_SIZE_REQUEST,
+  UPDATE_SIZE_SUCCESS,
+  UPDATE_SIZE_FAILURE,
 } from './ActionType';
 import api from "../../../config/api";
 
@@ -133,6 +139,40 @@ export const fetchRentOutRequests = (page, size = 10, status = "", dateOrder = "
   }
 };
 
+
+// Add Size to a Product
+export const addSize = (id, sizeData) => async (dispatch) => {
+  dispatch({ type: ADD_SIZE_REQUEST });
+  try {
+    const response = await api.put(`/api/rentout/product/${id}/size`, sizeData);
+    dispatch({
+      type: ADD_SIZE_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADD_SIZE_FAILURE,
+      payload: error.response ? error.response.data : error.message,
+    });
+  }
+};
+
+// Update Size of a Product
+export const updateSize = (id, sizeData) => async (dispatch) => {
+  dispatch({ type: UPDATE_SIZE_REQUEST });
+  try {
+    const response = await api.put(`/api/admin/rentout/updateSize/${id}`, sizeData);
+    dispatch({
+      type: UPDATE_SIZE_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_SIZE_FAILURE,
+      payload: error.response ? error.response.data : error.message,
+    });
+  }
+};
 
 // export const fetchRentOutProducts = (page) => async (dispatch) => {
 //   dispatch({ type: FETCH_RENT_OUT_PRODUCTS_REQUEST });

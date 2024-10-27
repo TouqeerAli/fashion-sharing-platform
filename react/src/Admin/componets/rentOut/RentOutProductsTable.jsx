@@ -67,13 +67,10 @@ const AdminRentOutProducts = () => {
     setPage(value);
   };
   
-  // const handleViewDetails = (id) => {
-  //   navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
-  // };
-
   const handleViewDetails = (id) => {
-    navigate(`/admin/rentoutproduct/${id}`);
-  };
+     navigate(`/admin/rentoutproduct/${id}`); // Navigate to RentOutProductDetail with the product ID
+   };
+
 
 
   // Handle size change from dropdown
