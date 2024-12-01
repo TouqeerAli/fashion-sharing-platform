@@ -1,31 +1,35 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
 
 const HomeProductCard = ({ product }) => {
   const navigate = useNavigate();
 
+  const handleNavigate = () => {
+    navigate(`/product/${product?.id}`);
+  };
+
   return (
     <div
-    onClick={() => navigate(`/product/${product.id}`)}
-      className="cursor-pointer flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden w-[15rem] mx-3"
+      onClick={handleNavigate}
+      className="productCard w-[15rem] border m-3 transition-all cursor-pointer"
     >
-      <div className="h-[13rem] w-[10rem]">
-    
+      <div className="h-[20rem]">
         <img
-          className="object-cover object-top w-full h-full"
-          src={`http://localhost:5454/img/rent-out_products_img/${product?.images?.[1]?.imagePath}`}
-          alt={product?.images?.[0]?.imagePath}
-        
+          className="h-full w-full object-cover object-left-top"
+          src={`http://localhost:5454/img/rent-out_products_img/${product?.images?.[0]?.imagePath}`}
+          alt=""
         />
       </div>
+      <div className="textPart bg-white p-3">
+        <div>
+          <p className="font-bold opacity-60">{product?.brand}</p>
+          <p className="">{product?.itemName}</p>
+          <p className="font-semibold opacity-50">{product?.color}</p>
+        </div>
 
-      <div className="p-4 ">
-        <h3 className="text-lg font-medium text-gray-900">
-          {product?.itemName}
-        </h3>
-        <p className="mt-2 text-base text-gray-700">{product?.brand}</p>
-        <p className="mt-2 text-base text-gray-800">Rent Price : {product?.rentalPrice}</p>
+        <div className="flex space-x-2 items-center">
+          <p className="font-semibold">PKR.{product?.rentalPrice}</p>
+        </div>
       </div>
     </div>
   );

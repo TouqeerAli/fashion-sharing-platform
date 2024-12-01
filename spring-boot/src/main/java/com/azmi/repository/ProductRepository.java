@@ -33,4 +33,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	        @Param("category") String category,
 			@Param("sort") String sort
 			);
+
+	public List<Product> findAllByOccasion(String occasion);
 }

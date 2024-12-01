@@ -47,6 +47,10 @@ const Cart = () => {
               <span>Delivery Charges</span>
               <span className="text-green-700">PKR.200</span>
             </div>
+            <div className="flex justify-between">
+              <span>Security Deposit</span>
+              <span className="text-green-700"><span>PKR.{cart.cart.securityDeposite}</span></span>
+            </div>
             <hr />
             <div className="flex justify-between font-bold text-lg">
               <span>Total Amount</span>

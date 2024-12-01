@@ -64,4 +64,10 @@ public class UserProductController {
 		return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
 		
 	}
+
+	@GetMapping("products/occasion/{occasion}")
+	public ResponseEntity<List<Product>> getAllProductsByOccasion(@PathVariable String occasion){
+		List<Product> products = this.productService.getAllProductsByOccasion(occasion);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+	}
 }

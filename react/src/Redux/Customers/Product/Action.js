@@ -16,6 +16,9 @@ import {
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_FAILURE,
+  FIND_PRODUCT_BY_OCCASION_REQUEST,
+  FIND_PRODUCT_BY_OCCASION_SUCCESS,
+  FIND_PRODUCT_BY_OCCASION_FAILURE,
 } from "./ActionType";
 import api, { API_BASE_URL } from "../../../config/api";
 
@@ -75,6 +78,35 @@ export const findProductById = (reqData) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
+    });
+  }
+};
+
+
+// find by occasion
+export const findProductByOccasion = (reqOccasionData) => async (dispatch) => {
+  try {
+    dispatch({ 
+      type: FIND_PRODUCT_BY_OCCASION_REQUEST,
+      payload: reqOccasionData.occasion 
+    });
+
+    const { data } = await api.get(`/api/products/occasion/${reqOccasionData.occasion}`);
+
+    dispatch({
+      type: FIND_PRODUCT_BY_OCCASION_SUCCESS,
+      payload: {
+        occasion: reqOccasionData.occasion,
+        products: data
+      }
+    });
+  } catch (error) {
+    dispatch({
+      type: FIND_PRODUCT_BY_OCCASION_FAILURE,
+      payload: {
+        occasion: reqOccasionData.occasion,
+        error: error.response?.data?.message || error.message
+      }
     });
   }
 };

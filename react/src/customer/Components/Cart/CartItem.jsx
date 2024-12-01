@@ -38,6 +38,11 @@ const CartItem = ({ item,showButton }) => {
               PKR.{item?.product.rentalPrice}
             </p>
           </div>
+          <div className="flex space-x-2 items-center pt-3">
+            <p className="font-semibold text-lg">
+              PKR.{item?.product.securityDeposite}
+            </p>
+          </div>
         </div>
       </div>
      {showButton&& <div className="lg:flex items-center lg:space-x-10 pt-4">

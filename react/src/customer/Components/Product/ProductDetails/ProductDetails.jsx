@@ -17,54 +17,72 @@ import { findProductById } from "../../../../Redux/Customers/Product/Action";
 import { addItemToCart } from "../../../../Redux/Customers/Cart/Action";
 import { getAllReviews } from "../../../../Redux/Customers/Review/Action";
 
-// const product = {
-//   name: "Basic Tee 6-Pack",
-//   price: "₹996",
-//   href: "#",
-//   breadcrumbs: [
-//     { id: 1, name: "Men", href: "#" },
-//     { id: 2, name: "Clothing", href: "#" },
-//   ],
-//   images: [
-//     {
-//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-//       alt: "Two each of gray, white, and black shirts laying flat.",
-//     },
-//     {
-//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-//       alt: "Model wearing plain black basic tee.",
-//     },
-//     {
-//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-//       alt: "Model wearing plain gray basic tee.",
-//     },
-//     {
-//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-//       alt: "Model wearing plain white basic tee.",
-//     },
-//   ],
-//   colors: [
-//     { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-//     { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-//     { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-//   ],
-//   sizes: [
-//     { name: "S", inStock: true },
-//     { name: "M", inStock: true },
-//     { name: "L", inStock: true },
-//   ],
-//   description:
-//     'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-//   highlights: [
-//     "Hand cut and sewn locally",
-//     "Dyed with our proprietary colors",
-//     "Pre-washed & pre-shrunk",
-//     "Ultra-soft 100% cotton",
-//   ],
-//   details:
-//     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-// };
-// const reviews = { href: "#", average: 4, totalCount: 117 };
+const SizeTable = ({ sizeData }) => {
+  if (!sizeData) return null;
+
+  return (
+    <div className="mt-6 border rounded-lg overflow-hidden">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Size
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Shoulder
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Chest
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Waist
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Length
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Hip
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Sleeves
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Arm Hole
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          <tr className="hover:bg-gray-50">
+            <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              {sizeData.name}
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.shoulder}"
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.chest}"
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.waist}"
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.topLength}"
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.hip}"
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.sleeves}"
+            </td>
+            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+              {sizeData.armHole}"
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -72,7 +90,7 @@ function classNames(...classes) {
 
 export default function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState();
- 
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { customersProduct } = useSelector((store) => store);
@@ -114,7 +132,7 @@ export default function ProductDetails() {
     }
 
     // Proceed with adding to cart
-    const data = { productId};
+    const data = { productId };
     dispatch(addItemToCart({ data, jwt }));
     navigate("/cart");
   };
@@ -126,7 +144,6 @@ export default function ProductDetails() {
   }, [productId]);
 
   return (
-    
     <div className="bg-white lg:px-20">
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
@@ -135,51 +152,48 @@ export default function ProductDetails() {
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
           >
             <li>
-                
-                <div className="flex items-center">
-                  <a
-                    href={"/"}
-                    className="mr-2 text-sm font-medium text-gray-900"
-                  >
-                    Home
-                  </a>
-                  <svg
-                    width={16}
-                    height={20}
-                    viewBox="0 0 16 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="h-5 w-4 text-gray-300"
-                  >
-                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                  </svg>
-                </div>
-              </li>
+              <div className="flex items-center">
+                <a
+                  href={"/"}
+                  className="mr-2 text-sm font-medium text-gray-900"
+                >
+                  Home
+                </a>
+                <svg
+                  width={16}
+                  height={20}
+                  viewBox="0 0 16 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="h-5 w-4 text-gray-300"
+                >
+                  <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                </svg>
+              </div>
+            </li>
 
-
-              <li key={customersProduct.product?.category.id}>
-                
-                <div className="flex items-center">
-                  {/* <a
+            <li key={customersProduct.product?.category.id}>
+              <div className="flex items-center">
+                {/* <a
                     href={"/"}
                     className="mr-2 text-sm font-medium text-gray-900"
                   >
                     {customersProduct.product?.category.name}
                   </a> */}
-                  {customersProduct.product?.category.name}
-                  <svg
-                    width={16}
-                    height={20}
-                    viewBox="0 0 16 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="h-5 w-4 text-gray-300"
-                  >
-                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                  </svg>
-                </div>
-              </li>
-           
+                {customersProduct.product?.category.name}
+                <svg
+                  width={16}
+                  height={20}
+                  viewBox="0 0 16 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="h-5 w-4 text-gray-300"
+                >
+                  <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                </svg>
+              </div>
+            </li>
+
             <li className="text-sm">
               <a
                 href={() => navigate(`/product/${customersProduct.product.id}`)}
@@ -272,13 +286,17 @@ export default function ProductDetails() {
                 <p className="font-semibold">
                   Rental Price: PKR {customersProduct.product?.rentalPrice}
                 </p>
-                <br />
-                {/* <p className="opacity-50 ">
-                  Purchase Price: PKR {customersProduct.product?.purchasePrice}
-                </p> */}
+             
                 {/* <p className="text-green-600 font-semibold">
                   {customersProduct.product?.discountPersent}% Off
                 </p> */}
+              </div>
+              <div className="flex space-x-5 items-center text-lg lg:text-xl tracking-tight text-gray-900 mt-6">
+               
+                <p className="text-green-600 font-semibold">
+                  Security Deposit: PKR {customersProduct.product?.purchasePrice}
+                </p> 
+                
               </div>
 
               <div className="mt-6">
@@ -294,8 +312,16 @@ export default function ProductDetails() {
                   <strong>Available To:</strong>{" "}
                   {customersProduct.product?.availableTo}
                 </p>
+
+                <div className="mt-8">
+                <h3 className="text-lg font-medium text-gray-900">
+                  Size Details
+                </h3>
+                <SizeTable sizeData={customersProduct.product?.rentOutSize} />
+              </div>
               </div>
 
+             
               {/* Reviews */}
               {/* <div className="mt-6">
                 <h3 className="sr-only">Reviews</h3>

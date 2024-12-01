@@ -93,6 +93,16 @@ export default function RegisterUserForm({ handleNext }) {
             />
           </Grid>
           <Grid item xs={12}>
+            <TextField
+              required
+              id="cnic"
+              name="cnic"
+              label="CNIC"      
+              fullWidth
+              autoComplete="tel"
+            />
+          </Grid>
+          <Grid item xs={12}>
             <Button
               className="bg-[#9155FD] w-full"
               type="submit"

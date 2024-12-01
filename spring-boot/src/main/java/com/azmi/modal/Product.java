@@ -92,9 +92,34 @@ public class Product {
     private Category category;
     
     private LocalDateTime createdAt;
-    
+
+	@Column(name = "occasion")
+	private String occasion;
+
+	// One-to-One relationship with RentOutSize
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "rent_out_size_id", referencedColumnName = "id")
+	private RentOutSize rentOutSize;
+
+	public String getOccasion() {
+		return occasion;
+	}
+
+	public void setOccasion(String occasion) {
+		this.occasion = occasion;
+	}
+
 	public Product() {
 		
+	}
+
+
+	public RentOutSize getRentOutSize() {
+		return rentOutSize;
+	}
+
+	public void setRentOutSize(RentOutSize rentOutSize) {
+		this.rentOutSize = rentOutSize;
 	}
 
 	public String getItemName() {

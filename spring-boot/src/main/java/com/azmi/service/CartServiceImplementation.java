@@ -47,7 +47,7 @@ public class CartServiceImplementation implements CartService{
 		
 		cart.setTotalPrice(totalPrice);
 		cart.setTotalItem(cart.getCartItems().size());
-		cart.setTotalDiscountedPrice((totalDiscountedPrice)+200);
+		cart.setTotalDiscountedPrice((totalDiscountedPrice)+2200);
 		cart.setDiscounte(totalPrice-totalDiscountedPrice);
 		cart.setTotalItem(totalItem);
 		

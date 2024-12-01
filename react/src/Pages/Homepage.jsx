@@ -26,12 +26,15 @@ const Homepage = () => {
         <HomeProductSection data={kurtaPage1} section={"Women's Kurtas"} />
         <HomeProductSection data={mensPantsPage1} section={"Men's Pants"} /> */}
 
-        <HomeProductSection section="t-shirts" />
-        <HomeProductSection section="shirts" />
+        <HomeProductSection section="Casual" />
+        <HomeProductSection section="Party" />
+        <HomeProductSection section="Formal" />
+        <HomeProductSection section="Graduation" />
+        {/* <HomeProductSection section="shirts" />
         <HomeProductSection section="tops" />
         <HomeProductSection section="women_dress" />
         <HomeProductSection section="Saree" />
-        <HomeProductSection section="Lengha Choli" />
+        <HomeProductSection section="Lengha Choli" /> */}
         <RentOutClosetSection/>
       </div>
     </div>

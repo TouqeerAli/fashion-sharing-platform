@@ -168,7 +168,7 @@ const AdminRentOutProductDetail = () => {
     brand,
     category,
     rentalPrice,
-    purchasePrice,
+    securityDeposit,
     availableFrom,
     availableTo,
     description,
@@ -288,9 +288,9 @@ const AdminRentOutProductDetail = () => {
                 <TableCell>{rentalPrice ? `$${rentalPrice}` : "N/A"}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Purchase Price</TableCell>
+                <TableCell>Security Deposit</TableCell>
                 <TableCell>
-                  {purchasePrice ? `$${purchasePrice}` : "N/A"}
+                  {securityDeposit ? `$${securityDeposit}` : "N/A"}
                 </TableCell>
               </TableRow>
               <TableRow>

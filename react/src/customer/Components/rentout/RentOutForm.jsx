@@ -40,7 +40,7 @@ const RentOutForm = () => {
     isAvailableToSell: false,
     description: "",
     rentalPrice: "",
-    purchasePrice: "",
+    securityDeposit: "",
     availableFrom: "",
     availableTo: "",
     pickupLocation: "",
@@ -97,7 +97,7 @@ const RentOutForm = () => {
         color: "",
         description: "",
         rentalPrice: "",
-        purchasePrice: "",
+        securityDeposit: "",
         availableFrom: "",
         availableTo: "",
         pickupLocation: "",
@@ -202,8 +202,8 @@ const RentOutForm = () => {
                 <MenuItem value="shirts">Shirts</MenuItem>
                 <MenuItem value="women_dress">Dresses</MenuItem>
                 <MenuItem value="t-shirts">T-Shirts</MenuItem>
-                <MenuItem value="saree">Saree</MenuItem>
-                <MenuItem value="lengha_choli">Lengha Choli</MenuItem>
+                <MenuItem value="graduation">Graduation</MenuItem>
+                {/* <MenuItem value="lengha_choli">Lengha Choli</MenuItem> */}
               </Select>
             </FormControl>
           </Grid>
@@ -270,10 +270,10 @@ const RentOutForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Purchase Price"
+              label="Security Deposit"
               type="number"
-              name="purchasePrice"
-              value={formData.purchasePrice}
+              name="securityDeposit"
+              value={formData.securityDeposit}
               onChange={handleChange}
               required
             />
@@ -384,7 +384,7 @@ const RentOutForm = () => {
             )}
           </Grid>
           {/* ... */}
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -397,7 +397,7 @@ const RentOutForm = () => {
               }
               label="Is this product available for Sell"
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <FormControlLabel
               control={

@@ -63,7 +63,9 @@ public class AdminRentOutController {
     // Update status (approve/reject)
     @PutMapping("/updateStatus/{id}")
     public ResponseEntity<RentOut> updateRentOutStatus(@PathVariable Long id, @RequestParam String status) {
-        RentOut updatedRentOut = rentOutService.updateRentOutStatus(id, status);
+        System.out.println("update rentout");
+
+        RentOut updatedRentOut = this.rentOutService.updateRentOutStatus(id, status);
         return ResponseEntity.ok(updatedRentOut);
     }
 

@@ -31,7 +31,7 @@ const OrderCard = ({ item, order }) => {
         </Grid>
 
         <Grid item xs={2}>
-          <p>PKR.{item?.product.rentalPrice+200}</p>
+          <p>PKR.{item?.product.rentalPrice}</p>
         </Grid>
         <Grid item xs={4}>
           <p className="space-y-2 font-semibold">

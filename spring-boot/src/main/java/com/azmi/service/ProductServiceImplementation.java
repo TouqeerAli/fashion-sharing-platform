@@ -206,4 +206,9 @@ public class ProductServiceImplementation implements ProductService {
 		
 	}
 
+	@Override
+	public List<Product> getAllProductsByOccasion(String occasion) {
+		return  this.productRepository.findAllByOccasion(occasion);
+	}
+
 }

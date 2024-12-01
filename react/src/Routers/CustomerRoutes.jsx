@@ -3,7 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import ProductDetails from "../customer/Components/Product/ProductDetails/ProductDetails";
 import Product from "../customer/Components/Product/Product/Product";
 import Contact from "../Pages/Contact";
-import TearmsCondition from "../Pages/TearmsCondition";
+import TermsAndConditions from "../Pages/TermsAndConditions";
 import PrivacyPolicy from "../Pages/PrivacyPolicy";
 import About from "../Pages/About";
 import RentOut from "../Pages/RentOut";
@@ -45,7 +45,7 @@ const CustomerRoutes = () => {
         <Route path="/about" element={<About />}></Route>
         <Route path="/rentout" element={<RentOut />}></Route>
         <Route path="/privaciy-policy" element={<PrivacyPolicy />}></Route>
-        <Route path="/terms-condition" element={<TearmsCondition />}></Route>
+        <Route path="//terms-and-conditions" element={<TermsAndConditions />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/:lavelOne/:lavelTwo/:lavelThree" element={<Product />}></Route>
         <Route path="/product/:productId" element={<ProductDetails />}></Route>

@@ -215,15 +215,19 @@ public class RentOutServiceImplementation implements RentOutService{
 
     // Update status
     public RentOut updateRentOutStatus(Long id, String status) {
+        System.out.println("Status: "+status);
         RentOut rentOut = rentOutRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RentOut request not found"));
+        RentOutSize rentOutSize = rentOut.getRentOutSize();
 
         String email = rentOut.getUser().getEmail();
 
+        System.out.println("Status 1: "+status);
         sendEmail(email);
-
+        System.out.println("Status email kha po: "+status);
         rentOut.setStatus(status);
 
+        System.out.println("Status 2: "+status);
 
         //After approving the rentout, add it to product table to show in the frontend
         Product product = new Product();
@@ -242,7 +246,8 @@ public class RentOutServiceImplementation implements RentOutService{
         product.setStatus(rentOut.getStatus());
         product.setCategory(rentOut.getCategory());
         product.setUser(rentOut.getUser());
-
+        product.setOccasion(rentOut.getOccasion());
+        product.setRentOutSize(rentOutSize);
         List<RentOutProductImages> productImages = this.rentOutProductImagesRepository.findByRentOutId(rentOut.getId());
         for(RentOutProductImages image : productImages){
             image.setProduct(product);
@@ -251,6 +256,8 @@ public class RentOutServiceImplementation implements RentOutService{
         System.out.println("Before Product is saved");
         this.productRepo.save(product);
         System.out.println("Product is saved");
+
+        System.out.println("Status after approve: "+rentOut.getStatus());
         return rentOutRepository.save(rentOut);
     }
 
