@@ -375,6 +375,16 @@ export default function ProductDetails() {
                 )}
 
                 {/* Rent Now and Add to Cart Buttons */}
+
+                <div className="mt-4 flex items-center">
+        <input
+          type="checkbox"
+          id="terms"
+          
+          className="mr-2"
+        />
+        <label htmlFor="terms">I agree to the Terms and Conditions</label>
+      </div>
                 <div className="mt-10 flex space-x-4">
                   {/* <Button
                     variant="contained"
@@ -384,6 +394,8 @@ export default function ProductDetails() {
                   >
                     Rent Now
                   </Button> */}
+                  
+                    
                   <Button
                     variant="contained"
                     type="submit"

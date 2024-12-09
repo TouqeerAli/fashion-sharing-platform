@@ -87,6 +87,9 @@ public class User {
 		this.createdAt = createdAt;
 	}
 
+	public User(long l, String john, String doe, String password, String mail, Object o, String number, Object o1, Object o2, Object o3, Object o4) {
+	}
+
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		return roles.stream()

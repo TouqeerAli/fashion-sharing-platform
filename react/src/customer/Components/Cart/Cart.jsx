@@ -11,6 +11,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const jwt = localStorage.getItem("jwt");
   const {cart}=useSelector(store=>store);
+  const { customersProduct } = useSelector((store) => store);
   console.log("cart ",cart)
 
   useEffect(() => {
@@ -49,12 +50,13 @@ const Cart = () => {
             </div>
             <div className="flex justify-between">
               <span>Security Deposit</span>
-              <span className="text-green-700"><span>PKR.{cart.cart.securityDeposite}</span></span>
+              <span className="text-green-700"><span>PKR. {customersProduct.product?.purchasePrice}</span></span>
             </div>
             <hr />
             <div className="flex justify-between font-bold text-lg">
               <span>Total Amount</span>
-              <span className="text-green-700">PKR.{cart.cart?.totalDiscountedPrice}</span>
+              <span className="text-green-700">PKR.{(customersProduct.product?.purchasePrice || 0) + 
+              (cart.cart?.totalPrice || 0)}</span>
             </div>
           </div>
 
