@@ -18,17 +18,23 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from "@mui/material";
 import { ArrowBack, ArrowForward, Close } from "@mui/icons-material";
+
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import {
   fetchRentOutProductDetail,
   approveRentOutProduct,
   rejectRentOutProduct,
+  addSize,
+  updateSize,
 } from "../../../Redux/Admin/RentOut/Action";
 
 const AdminRentOutProductDetail = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -41,17 +47,60 @@ const AdminRentOutProductDetail = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null); // Track which action is being confirmed
   const [status, setStatus] = useState("Pending"); // Local state for status
+  const [openSizeModal, setOpenSizeModal] = useState(false); // State to manage Size Modal visibility
+  const [sizeData, setSizeData] = useState({
+    shoulder: "",
+    chest: "",
+    waist: "",
+    topLength: "",
+    hip: "",
+    sleeves: "",
+    armHole: "",
+    bottomLength: "",
+    bottomWaist: "",
+    innerLength: "",
+  });
+  const [isSizeUpdate, setIsSizeUpdate] = useState(false); // Determine if size data exists
 
   useEffect(() => {
     dispatch(fetchRentOutProductDetail(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    // Update the local status if the product details are loaded
     if (rentOutProduct) {
       setStatus(rentOutProduct.status);
+
+      // Check if size data exists
+      if (rentOutProduct.rentOutSize) {
+        setSizeData(rentOutProduct.rentOutSize);
+        setIsSizeUpdate(true);
+      } else {
+        setIsSizeUpdate(false);
+      }
     }
   }, [rentOutProduct]);
+
+  const handleOpenSizeModal = () => {
+    setOpenSizeModal(true);
+  };
+
+  const handleCloseSizeModal = () => {
+    setOpenSizeModal(false);
+  };
+
+  const handleSizeSubmit = () => {
+    dispatch(updateSize(id, sizeData));
+
+    setOpenSizeModal(false);
+  };
+
+  const handleSizeChange = (e) => {
+    const { name, value } = e.target;
+    setSizeData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleApprove = () => {
     setConfirmAction("approve");
@@ -95,11 +144,22 @@ const AdminRentOutProductDetail = () => {
     );
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // Render loading or error states
+  if (loading)
+    return (
+      <p className="text-center text-lg font-semibold text-gray-600">
+        Loading...
+      </p>
+    );
+  if (error)
+    return (
+      <p className="text-center text-lg font-semibold text-red-600">
+        Error: {error}
+      </p>
+    );
 
   const {
-    submissionDate,
+    createdDate,
     name,
     email,
     contact,
@@ -117,6 +177,13 @@ const AdminRentOutProductDetail = () => {
 
   return (
     <Box width={"100%"} mt={2}>
+      <button
+        onClick={() => navigate("/admin/rentout")}
+        className="mb-6 flex items-center text-blue-600 hover:text-blue-800"
+      >
+        <ArrowLeft className="mr-2" size={20} />
+        Back to Rent Out Requests
+      </button>
       <Typography variant="h4" textAlign="center" gutterBottom>
         Rent Out Product Detail
       </Typography>
@@ -130,7 +197,14 @@ const AdminRentOutProductDetail = () => {
               variant="h6"
               sx={{
                 textAlign: "center",
-                color: status === "Approved" ? "green" : status === "Rejected" ? "red" : "orange",
+                color:
+                  status === "Approved"
+                    ? "green"
+                    : status === "Rejected"
+                    ? "red"
+                    : status === "Pending"
+                    ? "Yellow"
+                    : "White",
               }}
             >
               Status: {status}
@@ -138,7 +212,7 @@ const AdminRentOutProductDetail = () => {
           </Grid>
           <Grid item>
             <Typography variant="h6">
-              Submitted on: {new Date(submissionDate).toLocaleDateString()}
+              Submitted on: {new Date(createdDate).toLocaleDateString()}
             </Typography>
           </Grid>
         </Grid>
@@ -151,8 +225,12 @@ const AdminRentOutProductDetail = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Field</strong></TableCell>
-                <TableCell><strong>Details</strong></TableCell>
+                <TableCell>
+                  <strong>Field</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Details</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -184,8 +262,12 @@ const AdminRentOutProductDetail = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Field</strong></TableCell>
-                <TableCell><strong>Details</strong></TableCell>
+                <TableCell>
+                  <strong>Field</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Details</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -207,15 +289,25 @@ const AdminRentOutProductDetail = () => {
               </TableRow>
               <TableRow>
                 <TableCell>Purchase Price</TableCell>
-                <TableCell>{purchasePrice ? `$${purchasePrice}` : "N/A"}</TableCell>
+                <TableCell>
+                  {purchasePrice ? `$${purchasePrice}` : "N/A"}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Available From</TableCell>
-                <TableCell>{availableFrom ? new Date(availableFrom).toLocaleDateString() : "N/A"}</TableCell>
+                <TableCell>
+                  {availableFrom
+                    ? new Date(availableFrom).toLocaleDateString()
+                    : "N/A"}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Available To</TableCell>
-                <TableCell>{availableTo ? new Date(availableTo).toLocaleDateString() : "N/A"}</TableCell>
+                <TableCell>
+                  {availableTo
+                    ? new Date(availableTo).toLocaleDateString()
+                    : "N/A"}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -226,6 +318,212 @@ const AdminRentOutProductDetail = () => {
         <CardHeader title="Description" />
         <Typography>{description || "No description available."}</Typography>
       </Card>
+
+      <Card className="mt-2" sx={{ p: 2 }}>
+        <CardHeader title="Size Information" />
+        {rentOutProduct?.rentOutSize?.shoulder ||
+        rentOutProduct?.rentOutSize?.chest ? (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <strong>Name</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Shoulder</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Chest</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Waist</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Top Length</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Hip</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Sleeves</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Arm Hole</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Bottom Length</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Bottom Waist</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Inner Length</strong>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>{rentOutProduct.rentOutSize.name} </TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.shoulder}</TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.chest}</TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.waist}</TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.topLength}</TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.hip}</TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.sleeves}</TableCell>
+                  <TableCell>{rentOutProduct.rentOutSize.armHole}</TableCell>
+                  <TableCell>
+                    {rentOutProduct.rentOutSize.bottomLength}
+                  </TableCell>
+                  <TableCell>
+                    {rentOutProduct.rentOutSize.bottomWaist}
+                  </TableCell>
+                  <TableCell>
+                    {rentOutProduct.rentOutSize.innerLength}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Button variant="contained" onClick={handleOpenSizeModal}>
+                Update Size
+              </Button>
+            </Box>
+          </TableContainer>
+        ) : (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Button variant="contained" onClick={handleOpenSizeModal}>
+              Add Size
+            </Button>
+          </Box>
+        )}
+      </Card>
+
+      {/* Size Modal for adding/updating size */}
+      <Dialog open={openSizeModal} onClose={handleCloseSizeModal}>
+        <DialogTitle>{isSizeUpdate ? "Update Size" : "Add Size"}</DialogTitle>
+        <DialogContent>
+        <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Shoulder"
+            name="shoulder"
+            type="number"
+            fullWidth
+            value={sizeData.shoulder}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Chest"
+            name="chest"
+            type="number"
+            fullWidth
+            value={sizeData.chest}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Waist"
+            name="waist"
+            type="number"
+            fullWidth
+            value={sizeData.waist}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Top Length"
+            name="width"
+            type="number"
+            fullWidth
+            value={sizeData.topLength}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Hip"
+            name="hip"
+            type="number"
+            fullWidth
+            value={sizeData.hip}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Sleeves"
+            name="sleeves"
+            type="number"
+            fullWidth
+            value={sizeData.sleeves}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Arm Hole"
+            name="armHole"
+            type="number"
+            fullWidth
+            value={sizeData.armHole}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+           <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Bottom Length"
+            name="bottomLength"
+            type="number"
+            fullWidth
+            value={sizeData.bottomLength}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Bottom Waist"
+            name="bottomWaist"
+            type="number"
+            fullWidth
+            value={sizeData.bottomWaist}
+            onChange={handleSizeChange}
+          />
+          
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            margin="dense"
+            label="Inner Length"
+            name="innerLength"
+            type="number"
+            fullWidth
+            value={sizeData.innerLength}
+            onChange={handleSizeChange}
+          />
+          </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSizeModal}>Cancel</Button>
+          <Button onClick={handleSizeSubmit}>
+            {isSizeUpdate ? "Update" : "Add"}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Card className="mt-2" sx={{ p: 2 }}>
         <CardHeader title="Product Images" />
@@ -282,8 +580,13 @@ const AdminRentOutProductDetail = () => {
         </Button>
       </Box>
 
-    {/* Image Modal for fullscreen view */}
-    <Dialog open={openImageModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
+      {/* Image Modal for fullscreen view */}
+      <Dialog
+        open={openImageModal}
+        onClose={handleCloseModal}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogContent sx={{ position: "relative" }}>
           <IconButton
             onClick={handleCloseModal}
@@ -334,7 +637,10 @@ const AdminRentOutProductDetail = () => {
       </Dialog>
 
       {/* Confirmation Dialog */}
-      <Dialog open={openConfirmDialog} onClose={() => setOpenConfirmDialog(false)}>
+      <Dialog
+        open={openConfirmDialog}
+        onClose={() => setOpenConfirmDialog(false)}
+      >
         <DialogTitle>
           {confirmAction === "approve" ? "Approve Request" : "Reject Request"}
         </DialogTitle>

@@ -33,19 +33,23 @@ public class RentOutServiceImplementation implements RentOutService{
     ProductRepository productRepo;
 
 
+
     @Autowired
     private JavaMailSender mailSender;  // Email sender instance
+
+
     ModelMapper modelMapper;
 
 
     private RentOutRepository rentOutRepository;
+    private RentOutSizeRepository rentOutSizeRepository;
     private RentOutProductImagesRepository rentOutProductImagesRepository;
     
     private CategoryRepository categoryRepository;
 
     private final UserRepository userRepository;
 
-    public RentOutServiceImplementation(CategoryRepository categoryRepository, RentOutRepository rentOutRepository,
+    public RentOutServiceImplementation(RentOutSizeRepository rentOutSizeRepository,CategoryRepository categoryRepository, RentOutRepository rentOutRepository,
                                         ModelMapper modelMapper, RentOutProductImagesRepository rentOutProductImagesRepository,
                                         UserRepository userRepository) {
         this.rentOutRepository = rentOutRepository;
@@ -53,6 +57,7 @@ public class RentOutServiceImplementation implements RentOutService{
         this.rentOutProductImagesRepository = rentOutProductImagesRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.rentOutSizeRepository=rentOutSizeRepository;
     }
 
     @Override
@@ -98,7 +103,10 @@ public class RentOutServiceImplementation implements RentOutService{
 
             thirdLevel=categoryRepository.save(thirdLevelCategory);
         }
-
+        // Create RentOutSize with just the size name
+        RentOutSize rentOutSize = new RentOutSize();
+        rentOutSize.setName(rentOutRequest.getSize()); // Only set the name for now
+        rentOutSize = rentOutSizeRepository.save(rentOutSize); // S
         //RentOut rentOut = rentOutRequestToRentOut(rentOutRequest);
         RentOut rentOut =new RentOut();
         rentOut.setItemName(rentOutRequest.getItemName());
@@ -113,8 +121,12 @@ public class RentOutServiceImplementation implements RentOutService{
         rentOut.setPickupLocation(rentOutRequest.getPickupLocation());
         rentOut.setTermsAndConditions(rentOutRequest.getTermsAndConditions());
         rentOut.setStatus("Pending");
+        rentOut.setAvailableToSell(rentOutRequest.getAvailableToSell());
         rentOut.setCategory(thirdLevel);
+        rentOut.setOccasion(rentOutRequest.getOccasion());
+        rentOut.setRentOutSize(rentOutSize);
         rentOut.setUser(user);
+
 
         if (images != null && !images.isEmpty()) {
             List<RentOutProductImages> rentOutProductImages = saveImages(images, rentOut);
@@ -263,7 +275,32 @@ public class RentOutServiceImplementation implements RentOutService{
                 .orElseThrow(() -> new RuntimeException("RentOut request not found"));
     }
 
+    @Override
+    public RentOut updateRentOutSize(Long id, RentOutSize rentOutSizeReq) {
+        RentOut rentOut = rentOutRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RentOut not found"));
 
+        // Fetch the RentOutSize entity associated with this RentOut
+        RentOutSize rentOutSize = rentOut.getRentOutSize();
+        if (rentOutSize == null) {
+            throw new RuntimeException("RentOutSize not found for this product");
+        }
+        rentOutSize.setShoulder(rentOutSizeReq.getShoulder());
+        rentOutSize.setChest(rentOutSizeReq.getChest());
+        rentOutSize.setWaist(rentOutSizeReq.getWaist());
+        rentOutSize.setTopLength(rentOutSizeReq.getTopLength());
+        rentOutSize.setHip(rentOutSizeReq.getHip());
+        rentOutSize.setSleeves(rentOutSizeReq.getSleeves());
+        rentOutSize.setArmHole(rentOutSizeReq.getArmHole());
+        rentOutSize.setBottomLength(rentOutSizeReq.getBottomLength());
+        rentOutSize.setBottomWaist(rentOutSizeReq.getBottomWaist());
+        rentOutSize.setInnerLength(rentOutSizeReq.getInnerLength());
+
+        // Save the updated RentOutSize entity
+        RentOutSize saved = rentOutSizeRepository.save(rentOutSize);
+        rentOut.setRentOutSize(saved);
+        return rentOutRepository.save(rentOut);
+    }
 
     public RentOut rentOutRequestToRentOut(CreateRentOutRequest rentOutRequest) {
         // Create a TypeMap for RentOut and skip the category and thirdLevelCategory mappings

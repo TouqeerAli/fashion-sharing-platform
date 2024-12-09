@@ -1,6 +1,5 @@
 package com.azmi.request;
 
-import com.azmi.modal.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -29,6 +28,25 @@ public class CreateRentOutRequest {
     private String secondLevelCategory;
     private String thirdLevelCategory;
     private Boolean termsAndConditions;
+
+    private Boolean isAvailableToSell;
+    private String occasion;
+
+    public String getOccasion() {
+        return occasion;
+    }
+
+    public void setOccasion(String occasion) {
+        this.occasion = occasion;
+    }
+
+    public Boolean getAvailableToSell() {
+        return isAvailableToSell;
+    }
+
+    public void setAvailableToSell(Boolean availableToSell) {
+        isAvailableToSell = availableToSell;
+    }
 
     @Override
     public String toString() {

@@ -15,6 +15,12 @@ import {
   FETCH_RENTOUT_PRODUCT_DETAIL_FAILURE,
   APPROVE_RENTOUT_PRODUCT_SUCCESS,
   REJECT_RENTOUT_PRODUCT_SUCCESS,
+  ADD_SIZE_REQUEST,
+  ADD_SIZE_SUCCESS,
+  ADD_SIZE_FAILURE,
+  UPDATE_SIZE_REQUEST,
+  UPDATE_SIZE_SUCCESS,
+  UPDATE_SIZE_FAILURE,
 } from './ActionType';
 
 const initialState = {
@@ -23,6 +29,7 @@ const initialState = {
   rentOutProduct: null,
   error: null,
   approvalStatus: null,
+  success: false,
 };
 
 const adminRentOutReducer = (state = initialState, action) => {
@@ -89,6 +96,34 @@ const adminRentOutReducer = (state = initialState, action) => {
         rentOutProduct: { ...state.rentOutProduct, status: 'rejected' },
         statusUpdated: true,
       };
+
+      case ADD_SIZE_REQUEST:
+        case UPDATE_SIZE_REQUEST:
+          return {
+            ...state,
+            loading: true,
+          };
+        case ADD_SIZE_SUCCESS:
+        case UPDATE_SIZE_SUCCESS:
+          return {
+
+            ...state,
+            loading: false,
+            rentOutProduct: action.payload,
+            // rentOutProduct: {
+            //   ...state.rentOutProduct,
+            //   size: action.payload,
+            // },
+            success: true,
+            error: null,
+          };
+        case ADD_SIZE_FAILURE:
+        case UPDATE_SIZE_FAILURE:
+          return {
+            ...state,
+            loading: false,
+            error: action.payload,
+          };
 
 
     default:

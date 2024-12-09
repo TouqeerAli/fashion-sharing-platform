@@ -37,13 +37,16 @@ const RentOutForm = () => {
     thirdLevelCategory: "",
     size: "",
     color: "",
+    isAvailableToSell: false,
     description: "",
     rentalPrice: "",
     purchasePrice: "",
     availableFrom: "",
     availableTo: "",
     pickupLocation: "",
+    occasion:"",
     termsAndConditions: false,
+    
   });
   const [imageFiles, setImageFiles] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -55,6 +58,7 @@ const RentOutForm = () => {
   }, [auth.user, navigate]);
 
   const handleChange = (e) => {
+    console.log("Helao")
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
@@ -74,6 +78,7 @@ const RentOutForm = () => {
     e.preventDefault();
     const data = new FormData();
     for (const key in formData) {
+      console.log("hehehe",key, formData[key])
       data.append(key, formData[key]);
     }
     for (let i = 0; i < imageFiles.length; i++) {
@@ -97,6 +102,8 @@ const RentOutForm = () => {
         availableTo: "",
         pickupLocation: "",
         termsAndConditions: false,
+        occasion:"",
+        isAvailableToSell: false,
       });
       setImageFiles([]);
     } catch (error) {
@@ -201,14 +208,31 @@ const RentOutForm = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
+            {/* <TextField
               fullWidth
               label="Size"
               name="size"
               value={formData.size}
               onChange={handleChange}
               required
-            />
+            /> */}
+            <FormControl fullWidth>
+              <InputLabel>Size</InputLabel>
+              <Select
+                name="size"
+                value={formData.size}
+                onChange={handleChange}
+                label="Size"
+                required
+              >
+                <MenuItem value="XS">XS</MenuItem>
+                <MenuItem value="S">S</MenuItem>
+                <MenuItem value="M">M</MenuItem>
+                <MenuItem value="L">L</MenuItem>
+                <MenuItem value="XL">XL</MenuItem>
+                
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -254,15 +278,49 @@ const RentOutForm = () => {
               required
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
+          <Grid item xs={12}  sm={6}>
+            {/* <TextField
               fullWidth
               label="Pickup Location"
               name="pickupLocation"
               value={formData.pickupLocation}
               onChange={handleChange}
               required
-            />
+            /> */}
+            <FormControl fullWidth>
+              <InputLabel>Pickup Location</InputLabel>
+              <Select
+                name="pickupLocation"
+                value={formData.pickupLocation}
+                onChange={handleChange}
+                label="Pickup Location"
+                required
+              >
+                <MenuItem value="Hyderabad">Hyderabad</MenuItem>
+                <MenuItem value="Jamshoro">Jamshoro</MenuItem>
+                
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}  sm={6}>
+          <FormControl fullWidth>
+              <InputLabel>Occasion</InputLabel>
+              <Select
+                name="occasion"
+                value={formData.occasion}
+                onChange={handleChange}
+                label="Occasion"
+                required
+              >
+                <MenuItem value="Wedding">Wedding</MenuItem>
+                <MenuItem value="Party">Party</MenuItem>
+                <MenuItem value="Graduation">Graduation</MenuItem>
+                <MenuItem value="Casual">Casual</MenuItem>
+                <MenuItem value="Formal">Formal</MenuItem>
+                
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -326,6 +384,20 @@ const RentOutForm = () => {
             )}
           </Grid>
           {/* ... */}
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isAvailableToSell}
+                  onChange={handleChange}
+                  name="isAvailableToSell"
+                  color="primary"
+                  
+                />
+              }
+              label="Is this product available for Sell"
+            />
+          </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={

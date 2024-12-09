@@ -1,6 +1,7 @@
 package com.azmi.service;
 
 import com.azmi.modal.RentOut;
+import com.azmi.modal.RentOutSize;
 import com.azmi.modal.User;
 import com.azmi.request.CreateRentOutRequest;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,8 @@ public interface RentOutService {
 
 
     RentOut getRentOutProduct(Long id);
+
+    RentOut updateRentOutSize(Long id, RentOutSize rentOutSize);
 
 
 }
